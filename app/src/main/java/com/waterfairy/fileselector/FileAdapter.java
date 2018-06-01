@@ -98,7 +98,7 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> {
     public void setData(FileListBean fileListBean) {
         this.mFileListBean = fileListBean;
         if (fileListBean != null)
-            files = fileListBean.getFileList(FileListBean.SORT_BY_TIME_DESC);
+            files = fileListBean.getFileList(FileListBean.SORT_BY_NAME);
         else files = null;
     }
 
