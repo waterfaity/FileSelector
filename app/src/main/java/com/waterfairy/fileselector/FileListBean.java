@@ -52,7 +52,7 @@ public class FileListBean {
             public int compare(File o1, File o2) {
                 int compare1 = 0;
                 int compare2 = 0;
-                compare1 = Boolean.valueOf(o2.isDirectory()).compareTo(o1.isDirectory()) * 1000;
+                compare1 = Boolean.valueOf(o2.isDirectory()).compareTo(o1.isDirectory()) * 1000000;
                 switch (sort) {
                     case SORT_BY_NAME:
                     case SORT_BY_NAME_DESC:
