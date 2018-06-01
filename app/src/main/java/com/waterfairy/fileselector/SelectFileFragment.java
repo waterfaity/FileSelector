@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.waterfairy.utils.ToastUtils;
 
@@ -26,11 +27,13 @@ import static android.view.View.NO_ID;
  * @date 2018/5/30 18:49
  * @info:
  */
-public class SelectFileFragment extends Fragment {
+public class SelectFileFragment extends Fragment implements FileAdapter.OnClickItemListener {
     private RecyclerView mRecyclerView;
     private View mRootView;
     private int currentLevel;//0 == sdcard
     private HashMap<Integer, FileListBean> fileHashMap;
+    private FileAdapter fileAdapter;
+    private TextView mTVPath;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -62,11 +65,13 @@ public class SelectFileFragment extends Fragment {
         }
         FileListBean fileListBean = new FileListBean();
         fileListBean.setFile(file);
+        fileListBean.setLevel(level);
         if (file.exists()) {
             fileListBean.setFileList(file.listFiles());
         } else {
             ToastUtils.show("文件不存在");
         }
+
         currentLevel = level;
         fileHashMap.put(level, fileListBean);
         showFileList(fileListBean);
@@ -78,7 +83,15 @@ public class SelectFileFragment extends Fragment {
      * @param fileListBean
      */
     private void showFileList(FileListBean fileListBean) {
-
+        mTVPath.setText(fileListBean.getFile().getAbsolutePath());
+        if (fileAdapter == null) {
+            fileAdapter = new FileAdapter(getActivity(), fileListBean);
+            fileAdapter.setOnClickItemListener(this);
+            mRecyclerView.setAdapter(fileAdapter);
+        } else {
+            fileAdapter.setData(fileListBean);
+            fileAdapter.notifyDataSetChanged();
+        }
     }
 
     private void initView() {
@@ -87,6 +100,7 @@ public class SelectFileFragment extends Fragment {
 
     private void findView() {
         mRecyclerView = findViewById(R.id.recycler_view);
+        mTVPath = findViewById(R.id.path);
     }
 
     @Nullable
@@ -101,5 +115,23 @@ public class SelectFileFragment extends Fragment {
             return null;
         }
         return mRootView.findViewById(id);
+    }
+
+
+    public void back() {
+        if (currentLevel == 0) return;
+        showFileList(fileHashMap.get(--currentLevel));
+    }
+
+    @Override
+    public void onItemClick(int pos, File file) {
+        if (file.isDirectory())
+            queryFile(file, currentLevel + 1);
+        else ToastUtils.show("文件:" + file.getName());
+    }
+
+    @Override
+    public void onBackClick() {
+        back();
     }
 }

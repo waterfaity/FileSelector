@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#5f7d8c</color>
-    <color name="colorPrimaryDark">#455a65</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="textColorBlack">#000000</color>
-    <color name="textColorGray">#a7a7a7</color>
-    <color name="black">#000000</color>
-    <color name="white">#FFFFFF</color>
-    <color name="trans">#00000000</color>
-    <color name="colorPressed">#9dc2d4</color>
+    <color name="fileSelectorColorPrimary">#5f7d8c</color>
+    <color name="fileSelectorColorPrimaryDark">#455a65</color>
+    <color name="fileSelectorColorAccent">#FF4081</color>
+    <color name="fileSelectorTextColorBlack">#000000</color>
+    <color name="fileSelectorTextColorGray">#a7a7a7</color>
+    <color name="fileSelectorBlack">#000000</color>
+    <color name="fileSelectorWhite">#FFFFFF</color>
+    <color name="fileSelectorTrans">#00000000</color>
+    <color name="fileSelectorColorPressed">#9dc2d4</color>
 </resources>

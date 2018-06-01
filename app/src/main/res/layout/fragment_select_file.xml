@@ -6,12 +6,13 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/path"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
-        android:text="/sdcrd"
-        android:textColor="@color/textColorGray"
+        android:text="/sdcard"
+        android:textColor="@color/fileSelectorTextColorGray"
         android:textSize="12dp"/>
 
     <android.support.v7.widget.RecyclerView
