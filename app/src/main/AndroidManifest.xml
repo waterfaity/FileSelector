@@ -8,6 +8,7 @@
         android:allowBackup="true"
         android:supportsRtl="true">
         <activity
+            android:label="@string/file_selector_title"
             android:name=".SelectFileActivity"
             android:screenOrientation="behind">
         </activity>

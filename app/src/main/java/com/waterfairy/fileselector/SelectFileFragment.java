@@ -17,7 +17,6 @@ import com.waterfairy.utils.ToastUtils;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.logging.Level;
 
 import static android.view.View.NO_ID;
 
@@ -32,8 +31,12 @@ public class SelectFileFragment extends Fragment implements FileAdapter.OnClickI
     private View mRootView;
     private int currentLevel;//0 == sdcard
     private HashMap<Integer, FileListBean> fileHashMap;
-    private FileAdapter fileAdapter;
+    private FileAdapter mAdapter;
     private TextView mTVPath;
+    private boolean canSelect;//是否可以选择文件
+    private boolean canSelectDir;//是否可以选择文件夹
+    private int limitNum;
+    private boolean canOnlySelectCurrentDir=true;//只能选择当前文件夹
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -84,13 +87,15 @@ public class SelectFileFragment extends Fragment implements FileAdapter.OnClickI
      */
     private void showFileList(FileListBean fileListBean) {
         mTVPath.setText(fileListBean.getFile().getAbsolutePath());
-        if (fileAdapter == null) {
-            fileAdapter = new FileAdapter(getActivity(), fileListBean);
-            fileAdapter.setOnClickItemListener(this);
-            mRecyclerView.setAdapter(fileAdapter);
+        if (mAdapter == null) {
+            mAdapter = new FileAdapter(getActivity(), fileListBean);
+            mAdapter.setCanSelect(canSelect, 2);
+            mAdapter.setCanSelectDir(canSelectDir);
+            mAdapter.setOnClickItemListener(this);
+            mRecyclerView.setAdapter(mAdapter);
         } else {
-            fileAdapter.setData(fileListBean);
-            fileAdapter.notifyDataSetChanged();
+            mAdapter.setData(fileListBean);
+            mAdapter.notifyDataSetChanged();
         }
     }
 
@@ -130,8 +135,90 @@ public class SelectFileFragment extends Fragment implements FileAdapter.OnClickI
         else ToastUtils.show("文件:" + file.getName());
     }
 
+    /**
+     * 返回上一级
+     */
     @Override
     public void onBackClick() {
         back();
+    }
+
+    /**
+     * 是否可以选择
+     *
+     * @param canSelect
+     */
+    public void setCanSelect(boolean canSelect) {
+        setCanSelect(canSelect, FileAdapter.NO_LIMIT);
+    }
+
+    /**
+     * @param canSelect
+     * @param limitNum  最大值
+     */
+    public void setCanSelect(boolean canSelect, int limitNum) {
+        this.canSelect = canSelect;
+        if (mAdapter != null) {
+            mAdapter.setCanSelect(canSelect, limitNum);
+        }
+    }
+
+    /**
+     * 文件夹是否可以选择
+     *
+     * @param canSelectDir
+     */
+    public void setCanSelectDir(boolean canSelectDir) {
+        this.canSelectDir = canSelectDir;
+        if (mAdapter != null) {
+            mAdapter.setCanSelectDir(canSelectDir);
+        }
+    }
+
+    /**
+     * 获取选中的所有文件
+     *
+     * @return
+     */
+    public HashMap<String, File> getSelectFiles() {
+        if (mAdapter != null) {
+            return mAdapter.getSelectFiles();
+        }
+        return null;
+    }
+
+    /**
+     * 移除所有选中的文件
+     */
+    public void removeAll() {
+        if (mAdapter != null) {
+            mAdapter.removeAllFiles();
+        }
+    }
+
+    /**
+     * 移除当前文件夹的所有文件
+     */
+    public void removeCurrentDirAllFiles() {
+        if (mAdapter != null) {
+            mAdapter.removeCurrentDirAllFiles();
+        }
+    }
+
+    /**
+     * 选中所有的files
+     */
+    public void selectAllFiles() {
+        if (mAdapter != null) {
+            mAdapter.selectAllFiles();
+        }
+    }
+
+    public void setCanOnlySelectCurrentDir(boolean canOnlySelectCurrentDir) {
+        this.canOnlySelectCurrentDir = canOnlySelectCurrentDir;
+        if (mAdapter != null) {
+            mAdapter.setCanOnlySelectCurrentDir(canOnlySelectCurrentDir);
+        }
+
     }
 }

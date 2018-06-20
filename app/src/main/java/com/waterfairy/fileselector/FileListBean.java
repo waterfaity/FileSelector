@@ -1,12 +1,8 @@
 package com.waterfairy.fileselector;
 
-import android.util.Log;
-
 import java.io.File;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 /**
  * @author water_fairy
@@ -16,7 +12,7 @@ import java.util.List;
  */
 public class FileListBean {
     private static final String TAG = "fileListBean";
-    private int level;
+    private int level;//层次
     private File file;
     private File[] fileList;
 
@@ -52,7 +48,7 @@ public class FileListBean {
             public int compare(File o1, File o2) {
                 int compare1 = 0;
                 int compare2 = 0;
-                compare1 = Boolean.valueOf(o2.isDirectory()).compareTo(o1.isDirectory()) * 1000;
+                compare1 = Boolean.valueOf(o2.isDirectory()).compareTo(o1.isDirectory()) * 1000000;
                 switch (sort) {
                     case SORT_BY_NAME:
                     case SORT_BY_NAME_DESC:
@@ -61,7 +57,7 @@ public class FileListBean {
                     case SORT_BY_TIME:
                     case SORT_BY_TIME_DESC:
                         compare2 = o1.lastModified() - o2.lastModified() > 0 ? 1 : -1;
-                         break;
+                        break;
                 }
                 return compare1 + (aec ? compare2 : -compare2);
             }

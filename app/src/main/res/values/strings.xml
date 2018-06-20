@@ -1,2 +1,3 @@
 <resources>
+    <string name="file_selector_title">文件选择</string>
 </resources>
