@@ -15,7 +15,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class MainActivity extends AppCompatActivity {
+public class FileSelectTestActivity extends AppCompatActivity {
     private SelectFileFragment selectFileFragment;
 
     @Override
