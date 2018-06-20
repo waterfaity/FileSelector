@@ -2,8 +2,6 @@ package com.waterfairy.fileselector;
 
 import android.text.TextUtils;
 
-import com.waterfairy.utils.NumFormatUtils;
-
 import java.io.File;
 
 /**

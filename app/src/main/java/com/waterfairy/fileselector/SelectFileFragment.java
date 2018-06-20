@@ -1,10 +1,10 @@
 package com.waterfairy.fileselector;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -13,10 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.waterfairy.utils.ToastUtils;
-
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 import static android.view.View.NO_ID;
 
@@ -33,10 +33,10 @@ public class SelectFileFragment extends Fragment implements FileAdapter.OnClickI
     private HashMap<Integer, FileListBean> fileHashMap;
     private FileAdapter mAdapter;
     private TextView mTVPath;
-    private boolean canSelect;//是否可以选择文件
+    private boolean canSelect = true;//是否可以选择文件
     private boolean canSelectDir;//是否可以选择文件夹
-    private int limitNum;
-    private boolean canOnlySelectCurrentDir=true;//只能选择当前文件夹
+    private int limitNum = -1;
+    private boolean canOnlySelectCurrentDir = true;//只能选择当前文件夹
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -52,7 +52,7 @@ public class SelectFileFragment extends Fragment implements FileAdapter.OnClickI
         if (TextUtils.equals(Environment.MEDIA_MOUNTED, externalStorageState)) {
             queryFile(Environment.getExternalStorageDirectory(), 0);
         } else {
-            ToastUtils.show("未挂载存储卡");
+            ToastShowTool.show("未挂载存储卡");
         }
     }
 
@@ -72,7 +72,7 @@ public class SelectFileFragment extends Fragment implements FileAdapter.OnClickI
         if (file.exists()) {
             fileListBean.setFileList(file.listFiles());
         } else {
-            ToastUtils.show("文件不存在");
+            ToastShowTool.show("文件不存在");
         }
 
         currentLevel = level;
@@ -89,8 +89,9 @@ public class SelectFileFragment extends Fragment implements FileAdapter.OnClickI
         mTVPath.setText(fileListBean.getFile().getAbsolutePath());
         if (mAdapter == null) {
             mAdapter = new FileAdapter(getActivity(), fileListBean);
-            mAdapter.setCanSelect(canSelect, 2);
+            mAdapter.setCanSelect(canSelect, limitNum);
             mAdapter.setCanSelectDir(canSelectDir);
+            mAdapter.setCanOnlySelectCurrentDir(canOnlySelectCurrentDir);
             mAdapter.setOnClickItemListener(this);
             mRecyclerView.setAdapter(mAdapter);
         } else {
@@ -132,7 +133,7 @@ public class SelectFileFragment extends Fragment implements FileAdapter.OnClickI
     public void onItemClick(int pos, File file) {
         if (file.isDirectory())
             queryFile(file, currentLevel + 1);
-        else ToastUtils.show("文件:" + file.getName());
+        else ToastShowTool.show("文件:" + file.getName());
     }
 
     /**
@@ -149,7 +150,7 @@ public class SelectFileFragment extends Fragment implements FileAdapter.OnClickI
      * @param canSelect
      */
     public void setCanSelect(boolean canSelect) {
-        setCanSelect(canSelect, FileAdapter.NO_LIMIT);
+        setCanSelect(canSelect, SelectFileActivity.NO_LIMIT);
     }
 
     /**
@@ -180,6 +181,22 @@ public class SelectFileFragment extends Fragment implements FileAdapter.OnClickI
      *
      * @return
      */
+    public ArrayList<File> getSelectFileList() {
+        HashMap<String, File> fileHashMap = getSelectFiles();
+
+        ArrayList<File> fileList = null;
+        if (fileHashMap != null) {
+            Set<String> strings = fileHashMap.keySet();
+            for (String next : strings) {
+                File file = fileHashMap.get(next);
+                if (fileList == null)
+                    fileList = new ArrayList<>();
+                fileList.add(file);
+            }
+        }
+        return fileList;
+    }
+
     public HashMap<String, File> getSelectFiles() {
         if (mAdapter != null) {
             return mAdapter.getSelectFiles();
@@ -214,11 +231,22 @@ public class SelectFileFragment extends Fragment implements FileAdapter.OnClickI
         }
     }
 
+    /**
+     * 只能选择当前文件夹的文件
+     *
+     * @param canOnlySelectCurrentDir
+     */
     public void setCanOnlySelectCurrentDir(boolean canOnlySelectCurrentDir) {
         this.canOnlySelectCurrentDir = canOnlySelectCurrentDir;
         if (mAdapter != null) {
             mAdapter.setCanOnlySelectCurrentDir(canOnlySelectCurrentDir);
         }
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ToastShowTool.initToast(getActivity());
     }
 }

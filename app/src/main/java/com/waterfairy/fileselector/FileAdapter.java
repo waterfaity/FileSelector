@@ -33,8 +33,7 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> im
     private Context mContext;
     private HashMap<String, File> mSelectFiles;
     private int maxNum = -1;
-    public static final int NO_LIMIT = -1;
-    private boolean canSelect;//文件选择
+    private boolean canSelect = true;//文件选择
     private boolean canSelectDir;//文件夹选择
     private boolean canOnlySelectCurrentDir = true;//只能选择当前文件夹的文件
 

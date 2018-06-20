@@ -1,4 +1,4 @@
-package com.waterfairy.utils;
+package com.waterfairy.test;
 
 import android.Manifest;
 import android.app.Activity;
