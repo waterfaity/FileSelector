@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.waterfairy.fileselector">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.waterfairy.fileselector">
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <application
-        android:name=".APP"
         android:allowBackup="true"
         android:supportsRtl="true">
         <activity
+            android:label="@string/file_selector_title"
             android:name=".SelectFileActivity"
             android:screenOrientation="behind">
         </activity>

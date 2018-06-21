@@ -1,4 +1,4 @@
-package com.waterfairy.utils;
+package com.waterfairy.fileselector;
 
 import android.content.Context;
 import android.widget.TextView;
@@ -12,7 +12,7 @@ import java.util.TimerTask;
  * Update by water_fairy on 2017/10/12.
  */
 
-public class ToastUtils {
+public class ToastShowTool {
     private static Toast mToast;
     private static Context mContext;
     private static TextView mTextView;
@@ -22,6 +22,7 @@ public class ToastUtils {
     private static Timer timer;
 
     public static void initToast(Context context) {
+        if (context!=null&&context==mContext)return;
         mContext = context;
         mToast = Toast.makeText(mContext, "", Toast.LENGTH_SHORT);
 //        mTextView = new TextView(mContext);

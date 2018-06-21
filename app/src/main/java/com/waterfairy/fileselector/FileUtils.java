@@ -2,13 +2,15 @@ package com.waterfairy.fileselector;
 
 import android.text.TextUtils;
 
+import java.io.File;
+
 /**
  * @author water_fairy
  * @email 995637517@qq.com
  * @date 2018/6/1 18:23
  * @info:
  */
-public class FileTypeUtils {
+public class FileUtils {
     public static int getIcon(String name) {
         if (!TextUtils.isEmpty(name)) {
             int index = name.lastIndexOf(".");
@@ -21,8 +23,8 @@ public class FileTypeUtils {
                 } else if ((",PNG,JEPG,JPG,BMP,GIF," +
                         "png,jepg,jpg,bmp,gif,").contains(type)) {
                     return R.mipmap.ic_img;
-                } else if ((",RM,RMVB,MPEG1,MPEG2,MPEG3,MPEG4,MOV,MTV,DAT,WMV,AVI,3GP,AMV,DMV,FLV," +
-                        "rm,rmvb,mpeg1,mpeg2,mpeg3,mpeg4,mov,mtv,dat,wmv,avi,3gp,amv,dmv,flv,").contains(type)) {
+                } else if ((",RM,RMVB,MPEG1,MPEG2,MPEG3,MPEG4,MOV,MTV,WMV,AVI,3GP,AMV,DMV,FLV," +
+                        "rm,rmvb,mpeg1,mpeg2,mpeg3,mpeg4,mov,mtv,wmv,avi,3gp,amv,dmv,flv,").contains(type)) {
                     return R.mipmap.ic_video;
                 } else if (",PDF,pdf,".contains(type)) {
                     return R.mipmap.ic_pdf;
@@ -32,7 +34,7 @@ public class FileTypeUtils {
                     return R.mipmap.ic_powerpoint;
                 } else if (",exl,EXL,".contains(type)) {
                     return R.mipmap.ic_excel;
-                } else if (",TEXT,text,txt,TXT,".contains(type)) {
+                } else if (",txt,TXT,".contains(type)) {
                     return R.mipmap.ic_text;
                 } else if (",HTML,html,".contains(type)) {
                     return R.mipmap.ic_html;
@@ -41,7 +43,20 @@ public class FileTypeUtils {
                 }
             }
         }
-
         return R.mipmap.ic_unknown;
+    }
+
+    public static String getFileLen(File file) {
+        long length = file.length();
+        if (length < 1024) {
+            return length + "B";
+        } else if (length < 1024 * 1024) {
+            return NumFormatUtils.getRoundingNum(length / 1024F, 2) + "KB";
+        } else if (length < 1024 * 1024 * 1024) {
+            return NumFormatUtils.getRoundingNum(length / (1024 * 1024F), 2) + "MB";
+        } else if (length < Long.MAX_VALUE) {
+            return NumFormatUtils.getRoundingNum(length / (1024 * 1024 * 1024F), 2) + "GB";
+        }
+        return length + "B";
     }
 }
