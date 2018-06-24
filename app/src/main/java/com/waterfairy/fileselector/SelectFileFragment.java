@@ -26,17 +26,16 @@ import static android.view.View.NO_ID;
  * @date 2018/5/30 18:49
  * @info:
  */
-public class SelectFileFragment extends Fragment implements FileAdapter.OnClickItemListener {
+public class SelectFileFragment extends Fragment implements FileAdapter.OnClickItemListener, FileQueryTool.OnFileQueryListener {
     private RecyclerView mRecyclerView;
     private View mRootView;
-    private int currentLevel;//0 == sdcard
-    private HashMap<Integer, FileListBean> fileHashMap;
     private FileAdapter mAdapter;
     private TextView mTVPath;
     private boolean canSelect = true;//是否可以选择文件
     private boolean canSelectDir;//是否可以选择文件夹
     private int limitNum = -1;
     private boolean canOnlySelectCurrentDir = true;//只能选择当前文件夹
+    private FileQueryTool fileQueryTool;//文件查询工具
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -47,56 +46,20 @@ public class SelectFileFragment extends Fragment implements FileAdapter.OnClickI
     }
 
     private void initData() {
-        fileHashMap = new HashMap<>();
+        initFileQueryTool();
+
         String externalStorageState = Environment.getExternalStorageState();
         if (TextUtils.equals(Environment.MEDIA_MOUNTED, externalStorageState)) {
-            queryFile(Environment.getExternalStorageDirectory(), 0);
+            fileQueryTool.queryFile(Environment.getExternalStorageDirectory(), 0);
         } else {
             ToastShowTool.show("未挂载存储卡");
         }
     }
 
-    /**
-     * 查询文件list
-     *
-     * @param file
-     * @param level
-     */
-    private void queryFile(File file, int level) {
-        if (file == null) {
-            return;
-        }
-        FileListBean fileListBean = new FileListBean();
-        fileListBean.setFile(file);
-        fileListBean.setLevel(level);
-        if (file.exists()) {
-            fileListBean.setFileList(file.listFiles());
-        } else {
-            ToastShowTool.show("文件不存在");
-        }
-
-        currentLevel = level;
-        fileHashMap.put(level, fileListBean);
-        showFileList(fileListBean);
-    }
-
-    /**
-     * 展示
-     *
-     * @param fileListBean
-     */
-    private void showFileList(FileListBean fileListBean) {
-        mTVPath.setText(fileListBean.getFile().getAbsolutePath());
-        if (mAdapter == null) {
-            mAdapter = new FileAdapter(getActivity(), fileListBean);
-            mAdapter.setCanSelect(canSelect, limitNum);
-            mAdapter.setCanSelectDir(canSelectDir);
-            mAdapter.setCanOnlySelectCurrentDir(canOnlySelectCurrentDir);
-            mAdapter.setOnClickItemListener(this);
-            mRecyclerView.setAdapter(mAdapter);
-        } else {
-            mAdapter.setData(fileListBean);
-            mAdapter.notifyDataSetChanged();
+    private void initFileQueryTool() {
+        if (fileQueryTool == null) {
+            fileQueryTool = new FileQueryTool();
+            fileQueryTool.setOnFileQueryListener(this);
         }
     }
 
@@ -125,14 +88,13 @@ public class SelectFileFragment extends Fragment implements FileAdapter.OnClickI
 
 
     public void back() {
-        if (currentLevel == 0) return;
-        showFileList(fileHashMap.get(--currentLevel));
+        fileQueryTool.back();
     }
 
     @Override
     public void onItemClick(int pos, File file) {
         if (file.isDirectory())
-            queryFile(file, currentLevel + 1);
+            fileQueryTool.queryFileNext(file);
         else ToastShowTool.show("文件:" + file.getName());
     }
 
@@ -174,6 +136,11 @@ public class SelectFileFragment extends Fragment implements FileAdapter.OnClickI
         if (mAdapter != null) {
             mAdapter.setCanSelectDir(canSelectDir);
         }
+    }
+
+    public void setSelectType(String selectType) {
+        initFileQueryTool();
+        fileQueryTool.setSelectType(selectType);
     }
 
     /**
@@ -248,5 +215,24 @@ public class SelectFileFragment extends Fragment implements FileAdapter.OnClickI
     public void onResume() {
         super.onResume();
         ToastShowTool.initToast(getActivity());
+    }
+
+    /**
+     * @param fileListBean
+     */
+    @Override
+    public void onQueryFile(FileListBean fileListBean) {
+        mTVPath.setText(fileListBean.getFile().getAbsolutePath());
+        if (mAdapter == null) {
+            mAdapter = new FileAdapter(getActivity(), fileListBean);
+            mAdapter.setCanSelect(canSelect, limitNum);
+            mAdapter.setCanSelectDir(canSelectDir);
+            mAdapter.setCanOnlySelectCurrentDir(canOnlySelectCurrentDir);
+            mAdapter.setOnClickItemListener(this);
+            mRecyclerView.setAdapter(mAdapter);
+        } else {
+            mAdapter.setData(fileListBean);
+            mAdapter.notifyDataSetChanged();
+        }
     }
 }
