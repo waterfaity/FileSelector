@@ -11,20 +11,23 @@ import java.io.File;
  * @info:
  */
 public class FileUtils {
+    public static final String TYPE_AUDIO = ",MP3,WMA,FLAC,AAC,MMF,AMR,M4A,M4R,OGG,MP2,WAV,WV," +
+            "mp3,wma,flac,aac,mmf,amr,m4a,m4r,ogg,mp2,wav,wv,";
+    public static final String TYPE_VIDEO = ",RM,RMVB,MPEG1,MPEG2,MPEG3,MPEG4,MOV,MTV,WMV,AVI,3GP,AMV,DMV,FLV," +
+            "rm,rmvb,mpeg1,mpeg2,mpeg3,mpeg4,mov,mtv,wmv,avi,3gp,amv,dmv,flv,";
+    public static final String TYPE_JPG = ",PNG,JEPG,JPG,BMP,GIF," +
+            "png,jepg,jpg,bmp,gif,";
+
     public static int getIcon(String name) {
         if (!TextUtils.isEmpty(name)) {
-            int index = name.lastIndexOf(".");
-            String type = name.substring(index + 1, name.length());
+            String type = getType(name);
             if (!TextUtils.isEmpty(type)) {
                 type = "," + type + ",";
-                if ((",MP3,WMA,FLAC,AAC,MMF,AMR,M4A,M4R,OGG,MP2,WAV,WV," +
-                        "mp3,wma,flac,aac,mmf,amr,m4a,m4r,ogg,mp2,wav,wv").contains(type)) {
+                if (TYPE_AUDIO.contains(type)) {
                     return R.mipmap.ic_audio;
-                } else if ((",PNG,JEPG,JPG,BMP,GIF," +
-                        "png,jepg,jpg,bmp,gif,").contains(type)) {
+                } else if (TYPE_JPG.contains(type)) {
                     return R.mipmap.ic_img;
-                } else if ((",RM,RMVB,MPEG1,MPEG2,MPEG3,MPEG4,MOV,MTV,WMV,AVI,3GP,AMV,DMV,FLV," +
-                        "rm,rmvb,mpeg1,mpeg2,mpeg3,mpeg4,mov,mtv,wmv,avi,3gp,amv,dmv,flv,").contains(type)) {
+                } else if (TYPE_VIDEO.contains(type)) {
                     return R.mipmap.ic_video;
                 } else if (",PDF,pdf,".contains(type)) {
                     return R.mipmap.ic_pdf;
@@ -46,6 +49,13 @@ public class FileUtils {
         return R.mipmap.ic_unknown;
     }
 
+    static String getType(String fileName) {
+        if (TextUtils.isEmpty(fileName)) return "";
+        int index = fileName.lastIndexOf(".");
+        return fileName.substring(index + 1, fileName.length());
+    }
+
+
     public static String getFileLen(File file) {
         long length = file.length();
         if (length < 1024) {
@@ -58,5 +68,10 @@ public class FileUtils {
             return NumFormatUtils.getRoundingNum(length / (1024 * 1024 * 1024F), 2) + "GB";
         }
         return length + "B";
+    }
+
+    public static boolean isType(String typeTemp, String allType) {
+        if (TextUtils.isEmpty(allType)) return false;
+        else return allType.contains(typeTemp);
     }
 }
