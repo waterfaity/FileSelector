@@ -42,6 +42,7 @@ public class FileListBean {
     }
 
     public File[] getFileList(final int sort) {
+        if (fileList==null)return null;
         final boolean aec = sort % 2 != 0;
         Arrays.sort(fileList, new Comparator<File>() {
             @Override

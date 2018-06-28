@@ -2,6 +2,8 @@ package com.waterfairy.fileselector;
 
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,6 +13,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import android.widget.TextView;
 
 import java.io.File;
@@ -31,6 +34,7 @@ public class SelectFileFragment extends Fragment implements FileAdapter.OnClickI
     private View mRootView;
     private FileAdapter mAdapter;
     private TextView mTVPath;
+    private HorizontalScrollView mHorScrollView;
     private boolean canSelect = true;//是否可以选择文件
     private boolean canSelectDir;//是否可以选择文件夹
     private int limitNum = -1;
@@ -47,7 +51,6 @@ public class SelectFileFragment extends Fragment implements FileAdapter.OnClickI
 
     private void initData() {
         initFileQueryTool();
-
         String externalStorageState = Environment.getExternalStorageState();
         if (TextUtils.equals(Environment.MEDIA_MOUNTED, externalStorageState)) {
             fileQueryTool.queryFile(Environment.getExternalStorageDirectory(), 0);
@@ -70,6 +73,7 @@ public class SelectFileFragment extends Fragment implements FileAdapter.OnClickI
     private void findView() {
         mRecyclerView = findViewById(R.id.recycler_view);
         mTVPath = findViewById(R.id.path);
+        mHorScrollView = findViewById(R.id.hor_scroll_view);
     }
 
     @Nullable
@@ -234,5 +238,17 @@ public class SelectFileFragment extends Fragment implements FileAdapter.OnClickI
             mAdapter.setData(fileListBean);
             mAdapter.notifyDataSetChanged();
         }
+
+        scrollPath();
+    }
+
+    private void scrollPath() {
+        new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                mHorScrollView.scrollTo(mTVPath.getMeasuredWidth() - mHorScrollView.getWidth(), 0);
+            }
+        }.sendEmptyMessageDelayed(0, 100);
     }
 }
