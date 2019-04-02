@@ -13,7 +13,7 @@ import java.util.List;
 
 public class SelectFileActivity extends AppCompatActivity {
     private SelectFileFragment selectFileFragment;
-    public static final String RESULT_DATA = "resultHashMap";
+    public static final String RESULT_DATA = "data";
     public static final int NO_LIMIT = -1;
 
     @Override
