@@ -25,7 +25,7 @@ import java.util.Set;
  * @author water_fairy
  * @email 995637517@qq.com
  * @date 2018/5/31 11:04
- * @info: 文件展示adapter
+ * @info: 文件展示adapter  ...
  */
 public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> implements CompoundButton.OnCheckedChangeListener {
     private FileListBean mFileListBean;
