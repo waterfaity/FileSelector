@@ -3,10 +3,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@drawable/pressed_style_normal_white"
-                android:paddingBottom="5dp"
                 android:paddingLeft="2dp"
+                android:paddingTop="5dp"
                 android:paddingRight="2dp"
-                android:paddingTop="5dp">
+                android:paddingBottom="5dp">
 
     <ImageView
         android:id="@+id/img"
@@ -24,11 +24,11 @@
 
         <TextView
             android:id="@+id/name"
-            android:paddingRight="40dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:ellipsize="middle"
+            android:paddingRight="40dp"
             android:singleLine="true"
             android:text="title"
             android:textColor="@color/fileSelectorTextColorBlack"

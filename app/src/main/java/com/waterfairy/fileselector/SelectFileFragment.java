@@ -1,5 +1,6 @@
 package com.waterfairy.fileselector;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -10,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.TextView;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
@@ -37,16 +40,26 @@ public class SelectFileFragment extends Fragment implements FileAdapter.OnClickI
     private HorizontalScrollView mHorScrollView;
     private boolean canSelect = true;//是否可以选择文件
     private boolean canSelectDir;//是否可以选择文件夹
+    private boolean showHiddenFile = false;
     private int limitNum = -1;
     private boolean canOnlySelectCurrentDir = true;//只能选择当前文件夹
     private FileQueryTool fileQueryTool;//文件查询工具
+    private FileSelectOptions options;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        getExtra();
         findView();
         initView();
         initData();
+    }
+
+    private void getExtra() {
+        Bundle arguments = getArguments();
+        if (arguments != null && arguments.containsKey(FileSelectOptions.OPTIONS_BEAN)) {
+            options = (FileSelectOptions) arguments.getSerializable(FileSelectOptions.OPTIONS_BEAN);
+        }
     }
 
     private void initData() {
@@ -62,6 +75,7 @@ public class SelectFileFragment extends Fragment implements FileAdapter.OnClickI
     private void initFileQueryTool() {
         if (fileQueryTool == null) {
             fileQueryTool = new FileQueryTool();
+            fileQueryTool.setSelectType(getOptions().getSelectType());
             fileQueryTool.setOnFileQueryListener(this);
         }
     }
@@ -99,7 +113,17 @@ public class SelectFileFragment extends Fragment implements FileAdapter.OnClickI
     public void onItemClick(int pos, File file) {
         if (file.isDirectory())
             fileQueryTool.queryFileNext(file);
-        else ToastShowTool.show("文件:" + file.getName());
+        else {
+            if (getActivity() != null) {
+                ToastShowTool.show("文件:" + file.getName());
+                try {
+                    ProviderUtils.setAuthority(options.getPathAuthority());
+                    FileUtils.openFile(getActivity(), file);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     /**
@@ -168,6 +192,10 @@ public class SelectFileFragment extends Fragment implements FileAdapter.OnClickI
         return fileList;
     }
 
+    public void setShowHiddenFile(boolean showHiddenFile) {
+        this.showHiddenFile = showHiddenFile;
+    }
+
     public HashMap<String, File> getSelectFiles() {
         if (mAdapter != null) {
             return mAdapter.getSelectFiles();
@@ -229,9 +257,9 @@ public class SelectFileFragment extends Fragment implements FileAdapter.OnClickI
         mTVPath.setText(fileListBean.getFile().getAbsolutePath());
         if (mAdapter == null) {
             mAdapter = new FileAdapter(getActivity(), fileListBean);
-            mAdapter.setCanSelect(canSelect, limitNum);
-            mAdapter.setCanSelectDir(canSelectDir);
-            mAdapter.setCanOnlySelectCurrentDir(canOnlySelectCurrentDir);
+            mAdapter.setCanSelect(getOptions().isCanSelect(), getOptions().getLimitNum());
+            mAdapter.setCanSelectDir(getOptions().isCanSelectDir());
+            mAdapter.setCanOnlySelectCurrentDir(getOptions().isCanOnlySelectCurrentDir());
             mAdapter.setOnClickItemListener(this);
             mRecyclerView.setAdapter(mAdapter);
         } else {
@@ -250,5 +278,19 @@ public class SelectFileFragment extends Fragment implements FileAdapter.OnClickI
                 mHorScrollView.scrollTo(mTVPath.getMeasuredWidth() - mHorScrollView.getWidth(), 0);
             }
         }.sendEmptyMessageDelayed(0, 100);
+    }
+
+    private FileSelectOptions getOptions() {
+        if (options == null) {
+            options = new FileSelectOptions();
+        }
+        return options;
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            return fileQueryTool.back();
+        }
+        return false;
     }
 }

@@ -85,11 +85,14 @@ public class FileQueryTool {
         }
     }
 
-    public void back() {
-        if (currentLevel == 0) return;
+    public boolean back() {
+        if (currentLevel == 0) return false;
         currentLevel--;
-        if (onFileQueryListener != null)
+        if (onFileQueryListener != null) {
+
             onFileQueryListener.onQueryFile(fileHashMap.get(currentLevel));
+        }
+        return true;
     }
 
     public void setSelectType(String selectType) {

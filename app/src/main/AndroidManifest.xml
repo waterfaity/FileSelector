@@ -10,6 +10,7 @@
             android:label="@string/file_selector_title"
             android:screenOrientation="behind">
         </activity>
+
     </application>
 
 </manifest>

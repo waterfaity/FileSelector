@@ -22,7 +22,7 @@ public class ToastShowTool {
     private static Timer timer;
 
     public static void initToast(Context context) {
-        if (context!=null&&context==mContext)return;
+        if (context != null && context == mContext) return;
         mContext = context;
         mToast = Toast.makeText(mContext, "", Toast.LENGTH_SHORT);
 //        mTextView = new TextView(mContext);
@@ -90,5 +90,13 @@ public class ToastShowTool {
 
     private static void cancelShow() {
         mToast.cancel();
+    }
+
+    public static void release() {
+        if (mToast != null) {
+            mToast.cancel();
+        }
+        mToast = null;
+        mContext = null;
     }
 }
