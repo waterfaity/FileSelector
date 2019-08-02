@@ -11,6 +11,11 @@ public class FileQueryTool {
 
     private int currentLevel;
     private String selectType;
+    private boolean searchHiddenFile;
+
+    public void setSearchHiddenFile(boolean searchHiddenFile) {
+        this.searchHiddenFile = searchHiddenFile;
+    }
 
     public interface OnFileQueryListener {
         void onQueryFile(FileListBean fileListBean);
@@ -63,26 +68,24 @@ public class FileQueryTool {
      * @return
      */
     private File[] getFiles(File file, String selectType) {
-        if (TextUtils.isEmpty(selectType)) return file.listFiles();
-        else {
-            File[] files = file.listFiles();
-            List<File> queryFileList = new ArrayList<>();
-            if (files != null && files.length > 0) {
-                for (File fileTemp : files) {
-                    if (fileTemp.isDirectory()) {
+
+        File[] files = file.listFiles();
+        List<File> queryFileList = new ArrayList<>();
+        if (files != null && files.length > 0) {
+            for (File fileTemp : files) {
+                if (fileTemp.getName().startsWith(".") && !searchHiddenFile) {
+                    continue;
+                }
+                if (fileTemp.isDirectory()) {
+                    queryFileList.add(fileTemp);
+                } else {
+                    if (TextUtils.isEmpty(selectType) || TextUtils.equals(FileUtils.getType(fileTemp.getName()), selectType)) {
                         queryFileList.add(fileTemp);
-                    } else {
-                        String typeTemp = FileUtils.getType(fileTemp.getName());
-                        if (!TextUtils.isEmpty(typeTemp)) {
-                            if (FileUtils.isType(typeTemp, selectType)) {
-                                queryFileList.add(fileTemp);
-                            }
-                        }
                     }
                 }
             }
-            return queryFileList.toArray(new File[queryFileList.size()]);
         }
+        return queryFileList.toArray(new File[queryFileList.size()]);
     }
 
     public boolean back() {

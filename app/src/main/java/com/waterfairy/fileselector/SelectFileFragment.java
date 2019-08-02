@@ -38,11 +38,6 @@ public class SelectFileFragment extends Fragment implements FileAdapter.OnClickI
     private FileAdapter mAdapter;
     private TextView mTVPath;
     private HorizontalScrollView mHorScrollView;
-    private boolean canSelect = true;//是否可以选择文件
-    private boolean canSelectDir;//是否可以选择文件夹
-    private boolean showHiddenFile = false;
-    private int limitNum = -1;
-    private boolean canOnlySelectCurrentDir = true;//只能选择当前文件夹
     private FileQueryTool fileQueryTool;//文件查询工具
     private FileSelectOptions options;
 
@@ -75,6 +70,7 @@ public class SelectFileFragment extends Fragment implements FileAdapter.OnClickI
     private void initFileQueryTool() {
         if (fileQueryTool == null) {
             fileQueryTool = new FileQueryTool();
+            fileQueryTool.setSearchHiddenFile(getOptions().isShowHiddenFile());
             fileQueryTool.setSelectType(getOptions().getSelectType());
             fileQueryTool.setOnFileQueryListener(this);
         }
@@ -115,7 +111,7 @@ public class SelectFileFragment extends Fragment implements FileAdapter.OnClickI
             fileQueryTool.queryFileNext(file);
         else {
             if (getActivity() != null) {
-                ToastShowTool.show("文件:" + file.getName());
+//                ToastShowTool.show("文件:" + file.getName());
                 try {
                     ProviderUtils.setAuthority(options.getPathAuthority());
                     FileUtils.openFile(getActivity(), file);
@@ -148,7 +144,6 @@ public class SelectFileFragment extends Fragment implements FileAdapter.OnClickI
      * @param limitNum  最大值
      */
     public void setCanSelect(boolean canSelect, int limitNum) {
-        this.canSelect = canSelect;
         if (mAdapter != null) {
             mAdapter.setCanSelect(canSelect, limitNum);
         }
@@ -160,7 +155,6 @@ public class SelectFileFragment extends Fragment implements FileAdapter.OnClickI
      * @param canSelectDir
      */
     public void setCanSelectDir(boolean canSelectDir) {
-        this.canSelectDir = canSelectDir;
         if (mAdapter != null) {
             mAdapter.setCanSelectDir(canSelectDir);
         }
@@ -192,9 +186,6 @@ public class SelectFileFragment extends Fragment implements FileAdapter.OnClickI
         return fileList;
     }
 
-    public void setShowHiddenFile(boolean showHiddenFile) {
-        this.showHiddenFile = showHiddenFile;
-    }
 
     public HashMap<String, File> getSelectFiles() {
         if (mAdapter != null) {
@@ -236,7 +227,6 @@ public class SelectFileFragment extends Fragment implements FileAdapter.OnClickI
      * @param canOnlySelectCurrentDir
      */
     public void setCanOnlySelectCurrentDir(boolean canOnlySelectCurrentDir) {
-        this.canOnlySelectCurrentDir = canOnlySelectCurrentDir;
         if (mAdapter != null) {
             mAdapter.setCanOnlySelectCurrentDir(canOnlySelectCurrentDir);
         }

@@ -157,7 +157,6 @@ public class FileUtils {
         //Uri uri = Uri.parse("file://"+file.getAbsolutePath());
         Intent intent = new Intent();
 
-
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         //设置intent的Action属性
         intent.setAction(Intent.ACTION_VIEW);
@@ -167,7 +166,6 @@ public class FileUtils {
         Uri uri = ProviderUtils.getProviderUri(context, intent, file);
         intent.setDataAndType(/*uri*/uri, type);
         //跳转
-
 
         context.startActivity(intent);
     }
