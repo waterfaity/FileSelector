@@ -83,7 +83,7 @@ public class FileSelectActivity extends AppCompatActivity {
 
 
     private void onClickComplete() {
-        ArrayList<File> selectFileList = selectFileFragment.getSelectFileList();
+        ArrayList<String> selectFileList = selectFileFragment.getSelectFilePathList();
         if (selectFileList == null || selectFileList.size() == 0) {
             ToastShowTool.show("请选择文件");
         } else {

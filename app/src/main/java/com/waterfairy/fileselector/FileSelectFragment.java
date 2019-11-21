@@ -186,6 +186,27 @@ public class FileSelectFragment extends Fragment implements FileAdapter.OnClickI
         return fileList;
     }
 
+    /**
+     * 获取选中的所有文件
+     *
+     * @return
+     */
+    public ArrayList<String> getSelectFilePathList() {
+        HashMap<String, File> fileHashMap = getSelectFiles();
+
+        ArrayList<String> fileList = null;
+        if (fileHashMap != null) {
+            Set<String> strings = fileHashMap.keySet();
+            for (String next : strings) {
+                File file = fileHashMap.get(next);
+                if (fileList == null)
+                    fileList = new ArrayList<>();
+                fileList.add(file.getAbsolutePath());
+            }
+        }
+        return fileList;
+    }
+
 
     public HashMap<String, File> getSelectFiles() {
         if (mAdapter != null) {
