@@ -62,7 +62,7 @@ public class FileSelector {
             new Exception("请添加options").printStackTrace();
             return new Intent();
         } else {
-            Intent intent = new Intent(activity, FileSelectActivity.class);
+            Intent intent = new Intent(activity == null ? fragment.getContext() : activity, FileSelectActivity.class);
             intent.putExtra(FileSelectOptions.SCREEN_ORIENTATION, options.getScreenOrientation());
             intent.putExtra(FileSelectOptions.OPTIONS_BEAN, options);
             return intent;
