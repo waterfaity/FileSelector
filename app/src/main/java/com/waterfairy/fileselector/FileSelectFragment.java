@@ -1,6 +1,5 @@
 package com.waterfairy.fileselector;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -32,7 +31,7 @@ import static android.view.View.NO_ID;
  * @date 2018/5/30 18:49
  * @info:
  */
-public class SelectFileFragment extends Fragment implements FileAdapter.OnClickItemListener, FileQueryTool.OnFileQueryListener {
+public class FileSelectFragment extends Fragment implements FileAdapter.OnClickItemListener, FileQueryTool.OnFileQueryListener {
     private RecyclerView mRecyclerView;
     private View mRootView;
     private FileAdapter mAdapter;
@@ -40,6 +39,7 @@ public class SelectFileFragment extends Fragment implements FileAdapter.OnClickI
     private HorizontalScrollView mHorScrollView;
     private FileQueryTool fileQueryTool;//文件查询工具
     private FileSelectOptions options;
+    private OnFileSelectListener onFileSelectListener;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -136,7 +136,7 @@ public class SelectFileFragment extends Fragment implements FileAdapter.OnClickI
      * @param canSelect
      */
     public void setCanSelect(boolean canSelect) {
-        setCanSelect(canSelect, SelectFileActivity.NO_LIMIT);
+        setCanSelect(canSelect, FileSelectActivity.NO_LIMIT);
     }
 
     /**
@@ -251,6 +251,7 @@ public class SelectFileFragment extends Fragment implements FileAdapter.OnClickI
             mAdapter.setCanSelectDir(getOptions().isCanSelectDir());
             mAdapter.setCanOnlySelectCurrentDir(getOptions().isCanOnlySelectCurrentDir());
             mAdapter.setOnClickItemListener(this);
+            mAdapter.setOnFileSelectListener(onFileSelectListener);
             mRecyclerView.setAdapter(mAdapter);
         } else {
             mAdapter.setData(fileListBean);
@@ -282,5 +283,13 @@ public class SelectFileFragment extends Fragment implements FileAdapter.OnClickI
             return fileQueryTool.back();
         }
         return false;
+    }
+
+    public void setOnFileSelectListener(OnFileSelectListener onFileSelectListener) {
+        this.onFileSelectListener = onFileSelectListener;
+    }
+
+    public OnFileSelectListener getOnFileSelectListener() {
+        return onFileSelectListener;
     }
 }

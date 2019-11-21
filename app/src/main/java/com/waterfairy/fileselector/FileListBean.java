@@ -42,7 +42,7 @@ public class FileListBean {
     }
 
     public File[] getFileList(final int sort) {
-        if (fileList==null)return null;
+        if (fileList == null) return null;
         final boolean aec = sort % 2 != 0;
         Arrays.sort(fileList, new Comparator<File>() {
             @Override
@@ -53,7 +53,7 @@ public class FileListBean {
                 switch (sort) {
                     case SORT_BY_NAME:
                     case SORT_BY_NAME_DESC:
-                        compare2 = o1.getName().compareTo(o2.getName());
+                        compare2 = o1.getName().compareToIgnoreCase(o2.getName());
                         break;
                     case SORT_BY_TIME:
                     case SORT_BY_TIME_DESC:

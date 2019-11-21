@@ -36,6 +36,7 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> im
     private boolean canSelect = true;//文件选择
     private boolean canSelectDir;//文件夹选择
     private boolean canOnlySelectCurrentDir = true;//只能选择当前文件夹的文件
+    private OnFileSelectListener onFileSelectListener;
 
 
     public FileAdapter(Context mContext, FileListBean fileListBean) {
@@ -93,6 +94,7 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> im
                 holder.mIVIcon.setImageResource(R.mipmap.ic_folder);
                 holder.mTVName.setText("..");
                 holder.mTVInfo.setText("返回上一级");
+                holder.mViewSelectState.setVisibility(View.GONE);
                 jumpZero = true;
                 holder.itemView.setTag(null);
             }
@@ -105,7 +107,11 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> im
                 if (file.isDirectory()) {
                     //文件夹
                     holder.mIVIcon.setImageResource(R.mipmap.ic_folder);
+                    //判断当前文件夹下的文件是否有选择
+                    boolean b = checkSelect(file);
+                    holder.mViewSelectState.setVisibility(b ? View.VISIBLE : View.GONE);
                 } else {
+                    holder.mViewSelectState.setVisibility(View.GONE);
                     int resId = FileUtils.getIcon(name);
                     if (resId == R.mipmap.ic_img)
                         Glide.with(mContext).load(file).into(holder.mIVIcon);
@@ -139,6 +145,26 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> im
         } else {
             holder.mCheckBox.setVisibility(View.GONE);
         }
+    }
+
+    /**
+     * 判断当前文件夹下的文件是否有选择
+     *
+     * @param file
+     * @return
+     */
+    private boolean checkSelect(File file) {
+        if (mSelectFiles != null && mSelectFiles.size() != 0) {
+            Set<String> paths = mSelectFiles.keySet();
+            for (String path : paths) {
+                String absolutePath = file.getAbsolutePath();
+                if (path.startsWith(absolutePath)) {
+                    return true;
+                }
+            }
+        } else return false;
+
+        return false;
     }
 
     @Override
@@ -185,6 +211,7 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> im
                 mSelectFiles.remove(file.getAbsolutePath());
             }
         }
+        if (onFileSelectListener != null) onFileSelectListener.onFileSelect(mSelectFiles);
     }
 
     public void setCanSelectDir(boolean canSelectDir) {
@@ -292,14 +319,24 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> im
         }
     }
 
+    public void setOnFileSelectListener(OnFileSelectListener onFileSelectListener) {
+        this.onFileSelectListener = onFileSelectListener;
+    }
+
+    public OnFileSelectListener getOnFileSelectListener() {
+        return onFileSelectListener;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView mIVIcon;
         private TextView mTVName, mTVInfo;
         private CheckBox mCheckBox;
+        private View mViewSelectState;
 
         public ViewHolder(View itemView) {
             super(itemView);
             mIVIcon = itemView.findViewById(R.id.img);
+            mViewSelectState = itemView.findViewById(R.id.view_select_state);
             mTVName = itemView.findViewById(R.id.name);
             mTVInfo = itemView.findViewById(R.id.info);
             mCheckBox = itemView.findViewById(R.id.checkbox);

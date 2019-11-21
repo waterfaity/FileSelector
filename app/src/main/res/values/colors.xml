@@ -3,10 +3,20 @@
     <color name="fileSelectorColorPrimary">#5f7d8c</color>
     <color name="fileSelectorColorPrimaryDark">#455a65</color>
     <color name="fileSelectorColorAccent">#FF4081</color>
+    <color name="fileSelectorColorAccent2">#E04275</color>
     <color name="fileSelectorTextColorBlack">#000000</color>
     <color name="fileSelectorTextColorGray">#a7a7a7</color>
     <color name="fileSelectorBlack">#000000</color>
     <color name="fileSelectorWhite">#FFFFFF</color>
     <color name="fileSelectorTrans">#00000000</color>
     <color name="fileSelectorColorPressed">#9dc2d4</color>
+
+
+
+     <color name="fileSelector_bg_shadow">#44444444</color>
+    <color name="fileSelector_bg_shadow_deep">#66000000</color>
+    <color name="fileSelectorColorEnsureShadow">#99FFFFFF</color>
+    <color name="fileSelectorColorMain">#393a3f</color>
+    <color name="fileSelectorColorMainPressed">#4d4e54</color>
+
 </resources>

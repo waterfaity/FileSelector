@@ -3,22 +3,21 @@ package com.waterfairy.fileselector;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import java.io.File;
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
-public class SelectFileActivity extends AppCompatActivity {
-    private SelectFileFragment selectFileFragment;
-    public static final String RESULT_DATA = "data";
+public class FileSelectActivity extends AppCompatActivity {
     public static final int NO_LIMIT = -1;
+    private FileSelectFragment selectFileFragment;
+    public static final String RESULT_DATA = "data";
     private FileSelectOptions options;
+    private Button mEnsure;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +26,20 @@ public class SelectFileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_selector);
         getExtra();
         initFragment();
+        initView();
+
+    }
+
+    private void initView() {
+
+        mEnsure = findViewById(R.id.ensure_button);
+        showEnsureButton(0);
+        mEnsure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickComplete();
+            }
+        });
     }
 
 
@@ -46,7 +59,13 @@ public class SelectFileActivity extends AppCompatActivity {
 
     private void initFragment() {
 
-        selectFileFragment = new SelectFileFragment();
+        selectFileFragment = new FileSelectFragment();
+        selectFileFragment.setOnFileSelectListener(new OnFileSelectListener() {
+            @Override
+            public void onFileSelect(HashMap<String, File> selectFiles) {
+                showEnsureButton(selectFiles.size());
+            }
+        });
 
         if (options != null) {
             Bundle bundle = new Bundle();
@@ -54,14 +73,14 @@ public class SelectFileActivity extends AppCompatActivity {
             selectFileFragment.setArguments(bundle);
         }
         getSupportFragmentManager().beginTransaction().add(R.id.frame_layout, selectFileFragment).commit();
-
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        onClickComplete();
-        return super.onOptionsItemSelected(item);
+    private void showEnsureButton(int size) {
+        if (options.getLimitNum() > 0) {
+            mEnsure.setText("完成(" + size + "/" + options.getLimitNum() + ")");
+        }
     }
+
 
     private void onClickComplete() {
         ArrayList<File> selectFileList = selectFileFragment.getSelectFileList();
@@ -75,11 +94,6 @@ public class SelectFileActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add("完成").setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        return super.onCreateOptionsMenu(menu);
-    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

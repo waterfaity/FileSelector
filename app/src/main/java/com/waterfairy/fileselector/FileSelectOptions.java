@@ -21,7 +21,7 @@ public class FileSelectOptions implements Serializable {
     private String pathAuthority;
     private String selectType;//如:( ,png, )  或: ( ,jpg,png, ) (不要括号)
     private boolean canOnlySelectCurrentDir = false;
-    private boolean showHiddenFile=false;
+    private boolean showHiddenFile = false;
 
     public boolean isShowHiddenFile() {
         return showHiddenFile;
