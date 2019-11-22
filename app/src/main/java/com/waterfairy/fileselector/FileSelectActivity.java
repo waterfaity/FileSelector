@@ -40,6 +40,13 @@ public class FileSelectActivity extends AppCompatActivity {
                 onClickComplete();
             }
         });
+        findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
     }
 
 
