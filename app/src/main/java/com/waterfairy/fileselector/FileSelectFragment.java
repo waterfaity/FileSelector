@@ -4,11 +4,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.IdRes;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -22,6 +17,12 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
+
+import androidx.annotation.IdRes;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import static android.view.View.NO_ID;
 
@@ -110,13 +111,15 @@ public class FileSelectFragment extends Fragment implements FileAdapter.OnClickI
         if (file.isDirectory())
             fileQueryTool.queryFileNext(file);
         else {
-            if (getActivity() != null) {
+            if (options.isCanOpenFile()) {
+                if (getActivity() != null) {
 //                ToastShowTool.show("文件:" + file.getName());
-                try {
-                    ProviderUtils.setAuthority(options.getPathAuthority());
-                    FileUtils.openFile(getActivity(), file);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
+                    try {
+                        ProviderUtils.setAuthority(options.getPathAuthority());
+                        FileUtils.openFile(getActivity(), file);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }

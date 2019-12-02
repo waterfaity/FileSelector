@@ -16,12 +16,22 @@ public class FileSelectOptions implements Serializable {
     private final long serialVersionUID = 20190801171010000L;
     private int screenOrientation = -1;
     private int limitNum = -1;
-    private boolean canSelect = true;
-    private boolean canSelectDir = false;
-    private String pathAuthority;
+    private boolean canSelect = true;//是否可以选择
+    private boolean canSelectDir = false;//是否可以选择文件夹
+    private String pathAuthority;//
     private String selectType;//如:( ,png, )  或: ( ,jpg,png, ) (不要括号)
-    private boolean canOnlySelectCurrentDir = false;
-    private boolean showHiddenFile = false;
+    private boolean canOnlySelectCurrentDir = false;//只允许选择当前文件夹内的文件
+    private boolean showHiddenFile = false;//显示隐藏文件
+    private boolean canOpenFile = false;//显示隐藏文件
+
+    public boolean isCanOpenFile() {
+        return canOpenFile;
+    }
+
+    public FileSelectOptions setCanOpenFile(boolean canOpenFile) {
+        this.canOpenFile = canOpenFile;
+        return this;
+    }
 
     public boolean isShowHiddenFile() {
         return showHiddenFile;

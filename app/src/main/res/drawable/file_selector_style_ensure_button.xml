@@ -2,14 +2,14 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="false">
         <shape>
-            <corners android:radius="3dp"/>
-            <solid android:color="@color/fileSelectorColorAccent"/>
+            <corners android:radius="3dp" />
+            <solid android:color="@color/fileSelectorColorAccent" />
         </shape>
     </item>
     <item android:state_pressed="true">
         <shape>
-            <corners android:radius="3dp"/>
-            <solid android:color="@color/fileSelectorColorAccent2"/>
+            <corners android:radius="3dp" />
+            <solid android:color="@color/fileSelectorColorAccent2" />
         </shape>
     </item>
 </selector>

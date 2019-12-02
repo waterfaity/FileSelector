@@ -7,7 +7,6 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -267,7 +266,6 @@ public class FileSearchTool2 {
         onSearchListener = null;
         applicationContext = null;
     }
-
 
 
     public boolean isRunning() {

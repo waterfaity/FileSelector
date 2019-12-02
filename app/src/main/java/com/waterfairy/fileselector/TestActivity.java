@@ -1,9 +1,8 @@
 package com.waterfairy.fileselector;
 
 import android.net.Uri;
-import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 
 import com.waterfairy.fileselector.search.FileSearchConfig;
@@ -13,6 +12,8 @@ import com.waterfairy.fileselector.search.FolderSearchBean;
 import com.waterfairy.fileselector.search.OnSearchListener;
 
 import java.util.ArrayList;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class TestActivity extends AppCompatActivity {
 
