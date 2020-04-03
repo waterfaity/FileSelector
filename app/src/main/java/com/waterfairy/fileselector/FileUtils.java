@@ -7,6 +7,7 @@ import android.text.TextUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
 
 /**
  * @author water_fairy
@@ -15,42 +16,72 @@ import java.io.FileNotFoundException;
  * @info:
  */
 public class FileUtils {
+
+
+    private static HashMap<String, Integer> hashMap;
+
+
+    public static HashMap<String, Integer> getHashMap() {
+        if (hashMap == null) {
+            initHashMap();
+        }
+        return hashMap;
+    }
+
     public static final String TYPE_AUDIO = ",MP3,WMA,FLAC,AAC,MMF,AMR,M4A,M4R,OGG,MP2,WAV,WV," +
             "mp3,wma,flac,aac,mmf,amr,m4a,m4r,ogg,mp2,wav,wv,";
     public static final String TYPE_VIDEO = ",RM,RMVB,MPEG1,MPEG2,MPEG3,MPEG4,MOV,MTV,WMV,AVI,3GP,AMV,DMV,FLV," +
-            "rm,rmvb,mpeg1,mpeg2,mpeg3,mpeg4,mov,mtv,wmv,avi,3gp,amv,dmv,flv,";
+            "rm,rmvb,mpeg1,mpeg2,mpeg3,mpeg4,mov,mtv,wmv,avi,3gp,amv,dmv,flv,mp4,";
     public static final String TYPE_JPG = ",PNG,JEPG,JPG,BMP,GIF," +
             "png,jepg,jpg,bmp,gif,";
 
     public static int getIcon(String name) {
+        if (hashMap == null) {
+            initHashMap();
+        }
         if (!TextUtils.isEmpty(name)) {
             String type = getType(name);
             if (!TextUtils.isEmpty(type)) {
                 type = "," + type + ",";
                 if (TYPE_AUDIO.contains(type)) {
-                    return R.mipmap.ic_audio;
+                    return hashMap.get("audio");
                 } else if (TYPE_JPG.contains(type)) {
-                    return R.mipmap.ic_img;
+                    return hashMap.get("image");
                 } else if (TYPE_VIDEO.contains(type)) {
-                    return R.mipmap.ic_video;
+                    return hashMap.get("video");
                 } else if (",PDF,pdf,".contains(type)) {
-                    return R.mipmap.ic_pdf;
-                } else if (",doc,DOC,".contains(type)) {
-                    return R.mipmap.ic_word;
+                    return hashMap.get("pdf");
+                } else if (",doc,DOC,docx,DOCX,".contains(type)) {
+                    return hashMap.get("word");
                 } else if (",ppt,pptx,PPT,PPTX,".contains(type)) {
-                    return R.mipmap.ic_powerpoint;
-                } else if (",exl,EXL,".contains(type)) {
-                    return R.mipmap.ic_excel;
+                    return hashMap.get("ppt");
+                } else if (",xls,xlsx,".contains(type)) {
+                    return hashMap.get("excel");
                 } else if (",txt,TXT,".contains(type)) {
-                    return R.mipmap.ic_text;
+                    return hashMap.get("txt");
                 } else if (",HTML,html,".contains(type)) {
-                    return R.mipmap.ic_html;
+                    return hashMap.get("html");
                 } else if (",DB,db,".contains(type)) {
-                    return R.mipmap.ic_database;
+                    return hashMap.get("database");
                 }
             }
         }
-        return R.mipmap.ic_unknown;
+        return hashMap.get("unknown");
+    }
+
+    private static void initHashMap() {
+        hashMap = new HashMap<>();
+        hashMap.put("image", R.mipmap.ic_img);
+        hashMap.put("pdf", R.mipmap.ic_pdf);
+        hashMap.put("word", R.mipmap.ic_word);
+        hashMap.put("excel", R.mipmap.ic_excel);
+        hashMap.put("ppt", R.mipmap.ic_ppt);
+        hashMap.put("txt", R.mipmap.ic_text);
+        hashMap.put("html", R.mipmap.ic_html);
+        hashMap.put("database", R.mipmap.ic_database);
+        hashMap.put("video", R.mipmap.ic_video);
+        hashMap.put("audio", R.mipmap.ic_audio);
+        hashMap.put("unknown", R.mipmap.ic_unknown);
     }
 
     static String getType(String fileName) {
@@ -93,7 +124,6 @@ public class FileUtils {
             {".class", "application/octet-stream"},
             {".conf", "text/plain"},
             {".cpp", "text/plain"},
-            {".doc", "application/msword"},
             {".exe", "application/octet-stream"},
             {".gif", "image/gif"},
             {".gtar", "application/x-gtar"},
@@ -129,6 +159,10 @@ public class FileUtils {
             {".png", "image/png"},
             {".pps", "application/vnd.ms-powerpoint"},
             {".ppt", "application/vnd.ms-powerpoint"},
+            {".doc", "application/msword"},
+            {".docx", "application/msword"},
+            {".xls", "application/vnd.ms-excel"},
+            {".xlsx", "application/vnd.ms-excel"},
             {".prop", "text/plain"},
             {".rar", "application/x-rar-compressed"},
             {".rc", "text/plain"},

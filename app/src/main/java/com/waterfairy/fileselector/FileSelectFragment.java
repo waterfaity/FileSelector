@@ -12,17 +12,17 @@ import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.TextView;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
-
 import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
 
 import static android.view.View.NO_ID;
 
@@ -32,15 +32,17 @@ import static android.view.View.NO_ID;
  * @date 2018/5/30 18:49
  * @info:
  */
-public class FileSelectFragment extends Fragment implements FileAdapter.OnClickItemListener, FileQueryTool.OnFileQueryListener {
+public class FileSelectFragment extends Fragment implements FileAdapter.OnClickItemListener, FileQueryTool.OnFileQueryListener, FileSearchTool2.OnFileQueryListener {
     private RecyclerView mRecyclerView;
     private View mRootView;
     private FileAdapter mAdapter;
     private TextView mTVPath;
     private HorizontalScrollView mHorScrollView;
     private FileQueryTool fileQueryTool;//文件查询工具
+    private FileSearchTool2 fileQueryTool2;//文件查询工具
     private FileSelectOptions options;
     private OnFileSelectListener onFileSelectListener;
+    private FileSelectLoadingDialog fileSelectLoadingDialog;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -62,23 +64,44 @@ public class FileSelectFragment extends Fragment implements FileAdapter.OnClickI
         initFileQueryTool();
         String externalStorageState = Environment.getExternalStorageState();
         if (TextUtils.equals(Environment.MEDIA_MOUNTED, externalStorageState)) {
-            fileQueryTool.queryFile(Environment.getExternalStorageDirectory(), 0);
+            if (options.getSearchStyle() == FileSelectOptions.STYLE_FOLDER_AND_FILE)
+                fileQueryTool.queryFile(Environment.getExternalStorageDirectory(), 0);
+            else {
+                fileSelectLoadingDialog = new FileSelectLoadingDialog(getContext());
+                fileSelectLoadingDialog.show();
+                fileQueryTool2.start();
+            }
         } else {
             ToastShowTool.show("未挂载存储卡");
         }
     }
 
     private void initFileQueryTool() {
-        if (fileQueryTool == null) {
-            fileQueryTool = new FileQueryTool();
-            fileQueryTool.setSearchHiddenFile(getOptions().isShowHiddenFile());
-            fileQueryTool.setSelectType(getOptions().getSelectType());
-            fileQueryTool.setOnFileQueryListener(this);
+        if (options.getSearchStyle() == FileSelectOptions.STYLE_FOLDER_AND_FILE) {
+            if (fileQueryTool == null) {
+                fileQueryTool = new FileQueryTool();
+                fileQueryTool.setSearchStyle(options.getSearchStyle());
+                fileQueryTool.setSearchHiddenFile(getOptions().isShowHiddenFile());
+                fileQueryTool.setSelectType(getOptions().getSelectType());
+                fileQueryTool.setOnFileQueryListener(this);
+            }
+        } else {
+            if (fileQueryTool2 == null) {
+                fileQueryTool2 = FileSearchTool2.newInstance(getContext());
+                fileQueryTool2.setOnSearchListener(this);
+                FileSearchConfig fileSearchConfig = FileSearchConfig.defaultInstance();
+                fileSearchConfig.setExtensions(getOptions().getExtensions());
+                fileSearchConfig.setIgnorePaths(getOptions().getIgnorePaths());
+                fileQueryTool2.setConfig(fileSearchConfig);
+            }
         }
     }
 
     private void initView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        if (getOptions().getSearchStyle() == FileSelectOptions.STYLE_ONLY_FILE) {
+            mTVPath.setVisibility(View.GONE);
+        }
     }
 
     private void findView() {
@@ -103,17 +126,18 @@ public class FileSelectFragment extends Fragment implements FileAdapter.OnClickI
 
 
     public void back() {
-        fileQueryTool.back();
+        if (fileQueryTool != null)
+            fileQueryTool.back();
     }
 
     @Override
     public void onItemClick(int pos, File file) {
-        if (file.isDirectory())
-            fileQueryTool.queryFileNext(file);
-        else {
+        if (file.isDirectory()) {
+            if (fileQueryTool != null)
+                fileQueryTool.queryFileNext(file);
+        } else {
             if (options.isCanOpenFile()) {
                 if (getActivity() != null) {
-//                ToastShowTool.show("文件:" + file.getName());
                     try {
                         ProviderUtils.setAuthority(options.getPathAuthority());
                         FileUtils.openFile(getActivity(), file);
@@ -271,6 +295,8 @@ public class FileSelectFragment extends Fragment implements FileAdapter.OnClickI
         mTVPath.setText(fileListBean.getFile().getAbsolutePath());
         if (mAdapter == null) {
             mAdapter = new FileAdapter(getActivity(), fileListBean);
+            mAdapter.setSortType(getOptions().getSortType());
+            mAdapter.setData(fileListBean);
             mAdapter.setCanSelect(getOptions().isCanSelect(), getOptions().getLimitNum());
             mAdapter.setCanSelectDir(getOptions().isCanSelectDir());
             mAdapter.setCanOnlySelectCurrentDir(getOptions().isCanOnlySelectCurrentDir());
@@ -304,7 +330,9 @@ public class FileSelectFragment extends Fragment implements FileAdapter.OnClickI
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            return fileQueryTool.back();
+            if (fileQueryTool != null) {
+                return fileQueryTool.back();
+            }
         }
         return false;
     }
@@ -316,4 +344,35 @@ public class FileSelectFragment extends Fragment implements FileAdapter.OnClickI
     public OnFileSelectListener getOnFileSelectListener() {
         return onFileSelectListener;
     }
+
+    /**
+     * search 2
+     *
+     * @param file
+     */
+    @Override
+    public void onSearch(File file) {
+
+    }
+
+    /**
+     * search 2
+     *
+     * @param fileArrayList
+     */
+    @Override
+    public void onSearchSuccess(ArrayList<File> fileArrayList) {
+        if (fileSelectLoadingDialog != null)
+            fileSelectLoadingDialog.dismiss();
+        FileListBean fileListBean = new FileListBean();
+        fileListBean.setLevel(0);
+        fileListBean.setFile(Environment.getExternalStorageDirectory());
+        File[] files = new File[fileArrayList.size()];
+        for (int i = 0; i < fileArrayList.size(); i++) {
+            files[i] = fileArrayList.get(i);
+        }
+        fileListBean.setFileList(files);
+        onQueryFile(fileListBean);
+    }
+
 }

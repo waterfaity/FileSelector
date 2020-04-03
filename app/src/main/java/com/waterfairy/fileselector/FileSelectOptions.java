@@ -1,6 +1,9 @@
 package com.waterfairy.fileselector;
 
+import android.text.TextUtils;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * @author water_fairy
@@ -9,6 +12,7 @@ import java.io.Serializable;
  * @info:
  */
 public class FileSelectOptions implements Serializable {
+
     public static final String SCREEN_ORIENTATION = "screen_orientation";
     public static final String OPTIONS_BEAN = "option_bean";
     public static final int SCREEN_ORIENTATION_PORTRAIT = 1;
@@ -23,6 +27,40 @@ public class FileSelectOptions implements Serializable {
     private boolean canOnlySelectCurrentDir = false;//只允许选择当前文件夹内的文件
     private boolean showHiddenFile = false;//显示隐藏文件
     private boolean canOpenFile = false;//显示隐藏文件
+    private String[] ignorePaths;//FileSelectOptions.STYLE_ONLY_FILE有效
+
+    public static final int SORT_BY_NAME = 1;
+    public static final int SORT_BY_NAME_DESC = 2;
+    public static final int SORT_BY_TIME = 3;
+    public static final int SORT_BY_TIME_DESC = 4;
+
+    private int sortType = SORT_BY_NAME;
+
+
+    public static final int STYLE_ONLY_FILE = 1;//只有指定文件
+    public static final int STYLE_FOLDER_AND_FILE = 0;//文件夹和文件
+    /**
+     * 文件搜索类型
+     */
+    private int searchStyle;
+
+    public int getSearchStyle() {
+        return searchStyle;
+    }
+
+    public FileSelectOptions setSearchStyle(int searchStyle) {
+        this.searchStyle = searchStyle;
+        return this;
+    }
+
+    public String[] getIgnorePaths() {
+        return ignorePaths;
+    }
+
+    public FileSelectOptions setIgnorePaths(String... ignorePaths) {
+        this.ignorePaths = ignorePaths;
+        return this;
+    }
 
     public boolean isCanOpenFile() {
         return canOpenFile;
@@ -92,6 +130,33 @@ public class FileSelectOptions implements Serializable {
 
     public FileSelectOptions setSelectType(String selectType) {
         this.selectType = selectType;
+        return this;
+    }
+
+    public String[] getExtensions() {
+        if (!TextUtils.isEmpty(selectType)) {
+            String[] split = selectType.split(",");
+            ArrayList<String> datas = new ArrayList<>();
+            for (String s : split) {
+                if (!TextUtils.isEmpty(s)) {
+                    datas.add("." + s);
+                }
+            }
+            String[] extensions = new String[datas.size()];
+            for (int i = 0; i < datas.size(); i++) {
+                extensions[i] = datas.get(i);
+            }
+            return extensions;
+        }
+        return new String[]{};
+    }
+
+    public int getSortType() {
+        return sortType;
+    }
+
+    public FileSelectOptions setSortType(int sortType) {
+        this.sortType = sortType;
         return this;
     }
 

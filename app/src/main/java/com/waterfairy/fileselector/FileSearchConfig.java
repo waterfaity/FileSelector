@@ -1,4 +1,4 @@
-package com.waterfairy.fileselector.search;
+package com.waterfairy.fileselector;
 
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -17,8 +17,6 @@ public class FileSearchConfig {
     private String[] searchPaths;
     private String[] projections;
     private String sortOrder;//MediaStore.Images.Media.DATE_MODIFIED
-    private boolean merge;//合并
-    private int searchDeep = 3;//搜索深度
     private Uri contentUri;
 
 
@@ -28,15 +26,6 @@ public class FileSearchConfig {
         fileSearchConfig.setSortOrder(MediaStore.Files.FileColumns.DATE_MODIFIED);
         fileSearchConfig.setProjections(MediaStore.Files.FileColumns.DATA, MediaStore.Files.FileColumns.SIZE);
         return fileSearchConfig;
-    }
-
-    public int getSearchDeep() {
-        return searchDeep;
-    }
-
-    public FileSearchConfig setSearchDeep(int searchDeep) {
-        this.searchDeep = searchDeep;
-        return this;
     }
 
     public FileSearchConfig setExtensions(String... extensions) {
@@ -64,11 +53,6 @@ public class FileSearchConfig {
         return this;
     }
 
-    public FileSearchConfig setMerge(boolean merge) {
-        this.merge = merge;
-        return this;
-    }
-
 
     public String[] getExtensions() {
         return extensions;
@@ -90,9 +74,6 @@ public class FileSearchConfig {
         return sortOrder;
     }
 
-    public boolean isMerge() {
-        return merge;
-    }
 
     public Uri getContentUri() {
         return contentUri;

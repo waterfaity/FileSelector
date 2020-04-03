@@ -12,14 +12,21 @@ public class FileQueryTool {
     private int currentLevel;
     private String selectType;
     private boolean searchHiddenFile;
+    private int searchStyle;
 
     public void setSearchHiddenFile(boolean searchHiddenFile) {
         this.searchHiddenFile = searchHiddenFile;
     }
 
-    public interface OnFileQueryListener {
-        void onQueryFile(FileListBean fileListBean);
+    public void setSearchStyle(int searchStyle) {
+        this.searchStyle = searchStyle;
     }
+
+    public int getSearchStyle() {
+        return searchStyle;
+    }
+
+
 
     private OnFileQueryListener onFileQueryListener;
 
@@ -79,7 +86,7 @@ public class FileQueryTool {
                 if (fileTemp.isDirectory()) {
                     queryFileList.add(fileTemp);
                 } else {
-                    if (TextUtils.isEmpty(selectType) || TextUtils.equals(FileUtils.getType(fileTemp.getName()), selectType)) {
+                    if (TextUtils.isEmpty(selectType) || selectType.contains("," + FileUtils.getType(fileTemp.getName()) + ",")) {
                         queryFileList.add(fileTemp);
                     }
                 }
@@ -96,6 +103,9 @@ public class FileQueryTool {
             onFileQueryListener.onQueryFile(fileHashMap.get(currentLevel));
         }
         return true;
+    }
+    public interface OnFileQueryListener {
+        void onQueryFile(FileListBean fileListBean);
     }
 
     public void setSelectType(String selectType) {

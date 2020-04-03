@@ -10,6 +10,9 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 
 import java.io.File;
@@ -19,8 +22,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+import static com.waterfairy.fileselector.FileSelectOptions.SORT_BY_NAME;
+
 
 /**
  * @author water_fairy
@@ -38,7 +41,15 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> im
     private boolean canSelectDir;//文件夹选择
     private boolean canOnlySelectCurrentDir = true;//只能选择当前文件夹的文件
     private OnFileSelectListener onFileSelectListener;
+    private int sortType = SORT_BY_NAME;
 
+    public void setSortType(int sortType) {
+        this.sortType = sortType;
+    }
+
+    public FileAdapter(Context mContext) {
+        this.mContext = mContext;
+    }
 
     public FileAdapter(Context mContext, FileListBean fileListBean) {
         this.mContext = mContext;
@@ -179,7 +190,7 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> im
     public void setData(FileListBean fileListBean) {
         this.mFileListBean = fileListBean;
         if (fileListBean != null)
-            mDataList = fileListBean.getFileList(FileListBean.SORT_BY_NAME);
+            mDataList = fileListBean.getFileList(sortType);
         else mDataList = null;
         if (canOnlySelectCurrentDir) removeOtherDirSelectFiles();
     }
