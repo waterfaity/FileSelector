@@ -9,9 +9,8 @@
 
     </style>
 
-    <style name="LoadingDialogTheme" parent="Base.Theme.AppCompat.Dialog">
+    <style name="FileSelectorLoadingDialogTheme" parent="Base.Theme.AppCompat.Dialog">
         <item name="colorPrimaryDark">@android:color/transparent</item>
-
     </style>
 
 

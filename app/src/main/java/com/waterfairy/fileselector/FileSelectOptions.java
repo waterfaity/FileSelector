@@ -1,5 +1,7 @@
 package com.waterfairy.fileselector;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.text.TextUtils;
 
 import java.io.Serializable;
@@ -17,8 +19,7 @@ import java.util.ArrayList;
  * @date 2019-08-01 16:26
  * @info:
  */
-public class FileSelectOptions implements Serializable {
-    private final long serialVersionUID = 20190801171010000L;
+public class FileSelectOptions implements Parcelable {
 
     public static final String SCREEN_ORIENTATION = "screen_orientation";
     public static final String OPTIONS_BEAN = "option_bean";
@@ -34,6 +35,9 @@ public class FileSelectOptions implements Serializable {
     private String[] ignorePaths;//FileSelectOptions.STYLE_ONLY_FILE有效
     private boolean showHiddenFile = false;//显示隐藏文件
     private boolean canOnlySelectCurrentDir = false;//只允许选择当前文件夹内的文件
+
+    private ViewConfig viewConfig;//view 配置
+
 
     /**
      * 方向
@@ -192,6 +196,15 @@ public class FileSelectOptions implements Serializable {
         return this;
     }
 
+    public ViewConfig getViewConfig() {
+        return viewConfig;
+    }
+
+    public FileSelectOptions setViewConfig(ViewConfig viewConfig) {
+        this.viewConfig = viewConfig;
+        return this;
+    }
+
     public boolean isCanOnlySelectCurrentDir() {
         return canOnlySelectCurrentDir;
     }
@@ -200,4 +213,61 @@ public class FileSelectOptions implements Serializable {
         this.canOnlySelectCurrentDir = canOnlySelectCurrentDir;
         return this;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.limitNum);
+        dest.writeLong(this.maxFileSize);
+        dest.writeByte(this.showThumb ? (byte) 1 : (byte) 0);
+        dest.writeString(this.selectType);
+        dest.writeByte(this.canSelect ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.canOpenFile ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.canSelectDir ? (byte) 1 : (byte) 0);
+        dest.writeString(this.pathAuthority);
+        dest.writeStringArray(this.ignorePaths);
+        dest.writeByte(this.showHiddenFile ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.canOnlySelectCurrentDir ? (byte) 1 : (byte) 0);
+        dest.writeParcelable(this.viewConfig, flags);
+        dest.writeInt(this.screenOrientation);
+        dest.writeInt(this.sortType);
+        dest.writeInt(this.searchStyle);
+    }
+
+    public FileSelectOptions() {
+    }
+
+    protected FileSelectOptions(Parcel in) {
+        this.limitNum = in.readInt();
+        this.maxFileSize = in.readLong();
+        this.showThumb = in.readByte() != 0;
+        this.selectType = in.readString();
+        this.canSelect = in.readByte() != 0;
+        this.canOpenFile = in.readByte() != 0;
+        this.canSelectDir = in.readByte() != 0;
+        this.pathAuthority = in.readString();
+        this.ignorePaths = in.createStringArray();
+        this.showHiddenFile = in.readByte() != 0;
+        this.canOnlySelectCurrentDir = in.readByte() != 0;
+        this.viewConfig = in.readParcelable(ViewConfig.class.getClassLoader());
+        this.screenOrientation = in.readInt();
+        this.sortType = in.readInt();
+        this.searchStyle = in.readInt();
+    }
+
+    public static final Creator<FileSelectOptions> CREATOR = new Creator<FileSelectOptions>() {
+        @Override
+        public FileSelectOptions createFromParcel(Parcel source) {
+            return new FileSelectOptions(source);
+        }
+
+        @Override
+        public FileSelectOptions[] newArray(int size) {
+            return new FileSelectOptions[size];
+        }
+    };
 }

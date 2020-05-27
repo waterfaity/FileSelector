@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <RelativeLayout
+        android:id="@+id/rel_action_bar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="?attr/colorPrimary">
+        android:background="@color/fileSelectorColorPrimary">
 
         <ImageView
             android:id="@+id/iv_back"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:background="@drawable/file_selector_click_style_bg_trans"
             android:padding="15dp"
-            android:src="@mipmap/ic_back" />
+            android:src="@mipmap/file_selector_ic_back" />
 
 
         <TextView
@@ -34,14 +37,18 @@
             android:text="文件选择"
             android:textColor="@color/fileSelectorWhite" />
 
-        <Button
-            android:id="@+id/ensure_button"
+        <TextView
+            android:id="@+id/tv_ensure"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
             android:background="@drawable/file_selector_style_ensure_button"
+            android:gravity="center"
+            android:minWidth="70dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:text="完成"
             android:textColor="@drawable/file_selector_style_text_ensure_button" />
 
@@ -51,7 +58,6 @@
     <FrameLayout
         android:id="@+id/frame_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="50dp" />
+        android:layout_height="match_parent" />
 
-</RelativeLayout>
+</LinearLayout>

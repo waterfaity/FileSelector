@@ -77,7 +77,7 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> im
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_file_select, parent, false));
+        return new ViewHolder(LayoutInflater.from(mContext).inflate(R.layout.file_selector_item_file_select, parent, false));
     }
 
     @Override
@@ -111,7 +111,7 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> im
             holder.itemView.setTag(filePos);
             if (position == 0) {
                 //第一次项 返回上一级
-                holder.mIVIcon.setImageResource(R.mipmap.ic_folder);
+                holder.mIVIcon.setImageResource(R.mipmap.file_selector_ic_folder);
                 holder.mTVName.setText("..");
                 holder.mTVInfo.setText("返回上一级");
                 holder.mViewSelectState.setVisibility(View.GONE);
@@ -126,7 +126,7 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> im
                 String name = file.getName();
                 if (file.isDirectory()) {
                     //文件夹
-                    holder.mIVIcon.setImageResource(R.mipmap.ic_folder);
+                    holder.mIVIcon.setImageResource(R.mipmap.file_selector_ic_folder);
                     //判断当前文件夹下的文件是否有选择
                     boolean b = checkSelect(file);
                     holder.mViewSelectState.setVisibility(b ? View.VISIBLE : View.GONE);

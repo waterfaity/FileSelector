@@ -1,13 +1,12 @@
 package com.waterfairy.fileselector;
 
 import android.app.Activity;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
-
-import java.util.HashMap;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,7 +17,7 @@ public class TestActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test);
+        setContentView(R.layout.file_selector_activity_test);
 
         FileSearchConfig fileSearchConfig = FileSearchConfig.defaultInstance();
         Uri externalContentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;//content://media/external/images/media
@@ -28,6 +27,7 @@ public class TestActivity extends AppCompatActivity {
         fileSearchConfig.setExtensions(".jpg", ".png", ".gif");
         getVideo(this, 12);
 
+
     }
 
 
@@ -36,8 +36,17 @@ public class TestActivity extends AppCompatActivity {
     }
 
     private FileSelectOptions getFileSelectOptions() {
+
+        float density = getResources().getDisplayMetrics().density;
+        ViewConfig viewConfig = new ViewConfig();
+        int padding = (int) (density * 15);
+        viewConfig.setBackPadding(new Rect(padding, padding, padding, padding));
+        viewConfig.setActionBarHeight((int) (density * 50));
+        viewConfig.setBackRes(R.mipmap.file_selector_ic_back);
+        viewConfig.setMenuHeight((int) (density * 20));
         return new FileSelectOptions()
                 .setCanOpenFile(true)
+                .setViewConfig(viewConfig)
                 .setCanSelect(true)
                 .setMaxFileSize(10 * 1024 * 1024)//2M
                 .setPathAuthority(ProviderUtils.authority)

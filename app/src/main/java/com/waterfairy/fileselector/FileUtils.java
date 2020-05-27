@@ -5,13 +5,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
 
-import com.bumptech.glide.load.resource.bitmap.FitCenter;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
-
-import androidx.annotation.NonNull;
 
 /**
  * @author water_fairy
@@ -113,17 +109,17 @@ public class FileUtils {
 
     private static void initHashMap() {
         hashMap = new HashMap<>();
-        hashMap.put(FILE_TYPE_IMAGE, R.mipmap.ic_img);
-        hashMap.put(FILE_TYPE_PDF, R.mipmap.ic_pdf);
-        hashMap.put(FILE_TYPE_WORD, R.mipmap.ic_word);
-        hashMap.put(FILE_TYPE_EXCEL, R.mipmap.ic_excel);
-        hashMap.put(FILE_TYPE_PPT, R.mipmap.ic_ppt);
-        hashMap.put(FILE_TYPE_TXT, R.mipmap.ic_text);
-        hashMap.put(FILE_TYPE_HTML, R.mipmap.ic_html);
-        hashMap.put(FILE_TYPE_DATABASE, R.mipmap.ic_database);
-        hashMap.put(FILE_TYPE_VIDEO, R.mipmap.ic_video);
-        hashMap.put(FILE_TYPE_AUDIO, R.mipmap.ic_audio);
-        hashMap.put(FILE_TYPE_UNKNOWN, R.mipmap.ic_unknown);
+        hashMap.put(FILE_TYPE_IMAGE, R.mipmap.file_selector_ic_img);
+        hashMap.put(FILE_TYPE_PDF, R.mipmap.file_selector_ic_pdf);
+        hashMap.put(FILE_TYPE_WORD, R.mipmap.file_selector_ic_word);
+        hashMap.put(FILE_TYPE_EXCEL, R.mipmap.file_selector_ic_excel);
+        hashMap.put(FILE_TYPE_PPT, R.mipmap.file_selector_ic_ppt);
+        hashMap.put(FILE_TYPE_TXT, R.mipmap.file_selector_ic_text);
+        hashMap.put(FILE_TYPE_HTML, R.mipmap.file_selector_ic_html);
+        hashMap.put(FILE_TYPE_DATABASE, R.mipmap.file_selector_ic_database);
+        hashMap.put(FILE_TYPE_VIDEO, R.mipmap.file_selector_ic_video);
+        hashMap.put(FILE_TYPE_AUDIO, R.mipmap.file_selector_ic_audio);
+        hashMap.put(FILE_TYPE_UNKNOWN, R.mipmap.file_selector_ic_unknown);
     }
 
     public static String getFileFormat(String fileName) {

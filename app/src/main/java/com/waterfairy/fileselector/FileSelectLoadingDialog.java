@@ -29,7 +29,7 @@ public class FileSelectLoadingDialog extends Dialog implements DialogInterface.O
     private RotateAnimation rotateAnimation;
 
     public FileSelectLoadingDialog(@NonNull Context context) {
-        super(context, R.style.LoadingDialogTheme);
+        super(context, R.style.FileSelectorLoadingDialogTheme);
         setCancelable(false);
         initView();
         initAnim();

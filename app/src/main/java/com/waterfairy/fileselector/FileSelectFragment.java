@@ -56,7 +56,7 @@ public class FileSelectFragment extends Fragment implements FileAdapter.OnClickI
     private void getExtra() {
         Bundle arguments = getArguments();
         if (arguments != null && arguments.containsKey(FileSelectOptions.OPTIONS_BEAN)) {
-            options = (FileSelectOptions) arguments.getSerializable(FileSelectOptions.OPTIONS_BEAN);
+            options = arguments.getParcelable(FileSelectOptions.OPTIONS_BEAN);
         }
     }
 
@@ -113,7 +113,7 @@ public class FileSelectFragment extends Fragment implements FileAdapter.OnClickI
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        return mRootView = inflater.inflate(R.layout.fragment_select_file, container, false);
+        return mRootView = inflater.inflate(R.layout.file_selector_fragment_select_file, container, false);
     }
 
     @Nullable

@@ -2,10 +2,14 @@ package com.waterfairy.fileselector;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -18,14 +22,16 @@ public class FileSelectActivity extends AppCompatActivity {
     private FileSelectFragment selectFileFragment;
     public static final String RESULT_DATA = "data";
     private FileSelectOptions options;
-    private Button mEnsure;
+    private TextView mEnsure;
+    private ImageView mIVBack;
+    private RelativeLayout mRLActionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getExtra();
         initScreen();
-        setContentView(R.layout.activity_selector);
+        setContentView(R.layout.file_selector_activity_selector);
         initFragment();
         initView();
     }
@@ -33,7 +39,9 @@ public class FileSelectActivity extends AppCompatActivity {
 
     private void initView() {
 
-        mEnsure = findViewById(R.id.ensure_button);
+        mIVBack = findViewById(R.id.iv_back);
+        mEnsure = findViewById(R.id.tv_ensure);
+        mRLActionBar = findViewById(R.id.rel_action_bar);
         showEnsureButton(0);
         mEnsure.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,12 +49,33 @@ public class FileSelectActivity extends AppCompatActivity {
                 onClickComplete();
             }
         });
-        findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
+        mIVBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+
+        ViewConfig viewConfig = options.getViewConfig();
+        if (viewConfig != null) {
+            int actionBarHeight = viewConfig.getActionBarHeight();
+            if (actionBarHeight != 0) {
+                mRLActionBar.getLayoutParams().height = actionBarHeight;
+                ViewGroup.LayoutParams layoutParams = mIVBack.getLayoutParams();
+                layoutParams.height = actionBarHeight;
+                layoutParams.width = actionBarHeight;
+            }
+            if (viewConfig.getBackRes() != 0) {
+                mIVBack.setImageResource(viewConfig.getBackRes());
+            }
+            if (viewConfig.getBackPadding() != null) {
+                Rect backPadding = viewConfig.getBackPadding();
+                mIVBack.setPadding(backPadding.left, backPadding.top, backPadding.right, backPadding.bottom);
+            }
+            if (viewConfig.getMenuHeight() != 0) {
+                mEnsure.getLayoutParams().height = viewConfig.getMenuHeight();
+            }
+        }
 
     }
 
@@ -62,7 +91,7 @@ public class FileSelectActivity extends AppCompatActivity {
 
     private void getExtra() {
         Intent intent = getIntent();
-        options = (FileSelectOptions) intent.getSerializableExtra(FileSelectOptions.OPTIONS_BEAN);
+        options = intent.getParcelableExtra(FileSelectOptions.OPTIONS_BEAN);
     }
 
     private void initFragment() {
@@ -77,7 +106,7 @@ public class FileSelectActivity extends AppCompatActivity {
 
         if (options != null) {
             Bundle bundle = new Bundle();
-            bundle.putSerializable(FileSelectOptions.OPTIONS_BEAN, options);
+            bundle.putParcelable(FileSelectOptions.OPTIONS_BEAN, options);
             selectFileFragment.setArguments(bundle);
         }
         getSupportFragmentManager().beginTransaction().add(R.id.frame_layout, selectFileFragment).commit();
