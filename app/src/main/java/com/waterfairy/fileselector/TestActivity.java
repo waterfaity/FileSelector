@@ -27,7 +27,6 @@ public class TestActivity extends AppCompatActivity {
         fileSearchConfig.setContentUri(externalContentUri);
         fileSearchConfig.setExtensions(".jpg", ".png", ".gif");
         getVideo(this, 12);
-
     }
 
 
