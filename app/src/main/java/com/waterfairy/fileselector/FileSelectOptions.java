@@ -172,14 +172,7 @@ public class FileSelectOptions implements Serializable {
         return this;
     }
 
-    public int getThemeStyle() {
-        return themeStyle;
-    }
 
-    public FileSelectOptions setThemeStyle(int themeStyle) {
-        this.themeStyle = themeStyle;
-        return this;
-    }
 
     public boolean isShowThumb() {
         return showThumb;

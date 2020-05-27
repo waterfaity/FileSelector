@@ -24,21 +24,12 @@ public class FileSelectActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getExtra();
-        initTheme();
         initScreen();
         setContentView(R.layout.activity_selector);
         initFragment();
         initView();
     }
 
-    private void initTheme() {
-        if (options != null) {
-            int themeStyle = options.getThemeStyle();
-            if (themeStyle != 0) {
-                setTheme(themeStyle);
-            }
-        }
-    }
 
     private void initView() {
 
