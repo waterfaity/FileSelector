@@ -15,7 +15,27 @@ public class ViewConfig implements Parcelable {
     private int backRes;//返回按钮 图标资源
     private int actionBarHeight;//actionBar  高度
     private int menuHeight;//确认按钮高度
-    private int menuBgRes;
+    private int menuBgRes;//确认按钮背景颜色
+    private int menuMarginRight=-1;
+    private String title;
+
+    public int getMenuMarginRight() {
+        return menuMarginRight;
+    }
+
+    public ViewConfig setMenuMarginRight(int menuMarginRight) {
+        this.menuMarginRight = menuMarginRight;
+        return this;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public ViewConfig setTitle(String title) {
+        this.title = title;
+        return this;
+    }
 
     public int getMenuBgRes() {
         return menuBgRes;
@@ -78,6 +98,8 @@ public class ViewConfig implements Parcelable {
         dest.writeInt(this.actionBarHeight);
         dest.writeInt(this.menuHeight);
         dest.writeInt(this.menuBgRes);
+        dest.writeInt(this.menuMarginRight);
+        dest.writeString(this.title);
     }
 
     protected ViewConfig(Parcel in) {
@@ -86,6 +108,8 @@ public class ViewConfig implements Parcelable {
         this.actionBarHeight = in.readInt();
         this.menuHeight = in.readInt();
         this.menuBgRes = in.readInt();
+        this.menuMarginRight = in.readInt();
+        this.title = in.readString();
     }
 
     public static final Creator<ViewConfig> CREATOR = new Creator<ViewConfig>() {

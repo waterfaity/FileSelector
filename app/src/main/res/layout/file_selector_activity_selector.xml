@@ -35,7 +35,8 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/iv_back"
             android:text="文件选择"
-            android:textColor="@color/fileSelectorWhite" />
+            android:textColor="@color/fileSelectorWhite"
+            android:textSize="16dp" />
 
         <TextView
             android:id="@+id/tv_ensure"
@@ -50,7 +51,8 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:text="完成"
-            android:textColor="@drawable/file_selector_style_text_ensure_button" />
+            android:textColor="@drawable/file_selector_style_text_ensure_button"
+            android:textSize="14dp" />
 
 
     </RelativeLayout>

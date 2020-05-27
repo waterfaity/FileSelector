@@ -26,8 +26,6 @@ public class TestActivity extends AppCompatActivity {
         fileSearchConfig.setContentUri(externalContentUri);
         fileSearchConfig.setExtensions(".jpg", ".png", ".gif");
         getVideo(this, 12);
-
-
     }
 
 
@@ -46,6 +44,8 @@ public class TestActivity extends AppCompatActivity {
                         .setActionBarHeight((int) (density * 50))
                         .setBackRes(R.mipmap.file_selector_ic_back)
                         .setMenuHeight((int) (density * 50))
+                        .setTitle("视频选择")
+                        .setMenuMarginRight(0)
                         .setMenuBgRes(R.drawable.file_selector_click_style_bg_trans))
                 .setCanSelect(true)
                 .setMaxFileSize(10 * 1024 * 1024)//2M
