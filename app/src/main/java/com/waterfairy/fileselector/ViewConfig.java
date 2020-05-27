@@ -4,8 +4,6 @@ import android.graphics.Rect;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.Serializable;
-
 /**
  * @author water_fairy
  * @email 995637517@qq.com
@@ -13,43 +11,59 @@ import java.io.Serializable;
  * @info:
  */
 public class ViewConfig implements Parcelable {
-    private Rect backPadding;
-    private int backRes;
-    private int actionBarHeight;
-    private int menuHeight;
+    private Rect backPadding;//返回按钮 padding
+    private int backRes;//返回按钮 图标资源
+    private int actionBarHeight;//actionBar  高度
+    private int menuHeight;//确认按钮高度
+    private int menuBgRes;
+
+    public int getMenuBgRes() {
+        return menuBgRes;
+    }
+
+    public ViewConfig setMenuBgRes(int menuBgRes) {
+        this.menuBgRes = menuBgRes;
+        return this;
+    }
 
     public Rect getBackPadding() {
         return backPadding;
     }
 
-    public void setBackPadding(Rect backPadding) {
+    public ViewConfig setBackPadding(Rect backPadding) {
         this.backPadding = backPadding;
+        return this;
     }
 
     public int getMenuHeight() {
         return menuHeight;
     }
 
-    public void setMenuHeight(int menuHeight) {
+    public ViewConfig setMenuHeight(int menuHeight) {
         this.menuHeight = menuHeight;
+        return this;
     }
-
 
 
     public int getBackRes() {
         return backRes;
     }
 
-    public void setBackRes(int backRes) {
+    public ViewConfig setBackRes(int backRes) {
         this.backRes = backRes;
+        return this;
     }
 
     public int getActionBarHeight() {
         return actionBarHeight;
     }
 
-    public void setActionBarHeight(int actionBarHeight) {
+    public ViewConfig setActionBarHeight(int actionBarHeight) {
         this.actionBarHeight = actionBarHeight;
+        return this;
+    }
+
+    public ViewConfig() {
     }
 
     @Override
@@ -63,9 +77,7 @@ public class ViewConfig implements Parcelable {
         dest.writeInt(this.backRes);
         dest.writeInt(this.actionBarHeight);
         dest.writeInt(this.menuHeight);
-    }
-
-    public ViewConfig() {
+        dest.writeInt(this.menuBgRes);
     }
 
     protected ViewConfig(Parcel in) {
@@ -73,6 +85,7 @@ public class ViewConfig implements Parcelable {
         this.backRes = in.readInt();
         this.actionBarHeight = in.readInt();
         this.menuHeight = in.readInt();
+        this.menuBgRes = in.readInt();
     }
 
     public static final Creator<ViewConfig> CREATOR = new Creator<ViewConfig>() {

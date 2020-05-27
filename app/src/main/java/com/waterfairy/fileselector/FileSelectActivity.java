@@ -75,6 +75,9 @@ public class FileSelectActivity extends AppCompatActivity {
             if (viewConfig.getMenuHeight() != 0) {
                 mEnsure.getLayoutParams().height = viewConfig.getMenuHeight();
             }
+            if (viewConfig.getMenuBgRes() != 0) {
+                mEnsure.setBackgroundResource(viewConfig.getMenuBgRes());
+            }
         }
 
     }

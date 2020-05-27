@@ -38,15 +38,15 @@ public class TestActivity extends AppCompatActivity {
     private FileSelectOptions getFileSelectOptions() {
 
         float density = getResources().getDisplayMetrics().density;
-        ViewConfig viewConfig = new ViewConfig();
+
         int padding = (int) (density * 15);
-        viewConfig.setBackPadding(new Rect(padding, padding, padding, padding));
-        viewConfig.setActionBarHeight((int) (density * 50));
-        viewConfig.setBackRes(R.mipmap.file_selector_ic_back);
-        viewConfig.setMenuHeight((int) (density * 20));
         return new FileSelectOptions()
                 .setCanOpenFile(true)
-                .setViewConfig(viewConfig)
+                .setViewConfig(new ViewConfig().setBackPadding(new Rect(padding, padding, padding, padding))
+                        .setActionBarHeight((int) (density * 50))
+                        .setBackRes(R.mipmap.file_selector_ic_back)
+                        .setMenuHeight((int) (density * 50))
+                        .setMenuBgRes(R.drawable.file_selector_click_style_bg_trans))
                 .setCanSelect(true)
                 .setMaxFileSize(10 * 1024 * 1024)//2M
                 .setPathAuthority(ProviderUtils.authority)
