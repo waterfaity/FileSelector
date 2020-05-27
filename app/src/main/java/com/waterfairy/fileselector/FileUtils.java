@@ -132,7 +132,6 @@ public class FileUtils {
         return fileName.substring(index + 1);
     }
 
-
     public static String getFileLen(File file) {
         return getLenTrans(file.length());
 
@@ -244,7 +243,7 @@ public class FileUtils {
         String type = getMIMEType(file);
         //设置intent的data和Type属性。
         Uri uri = ProviderUtils.getProviderUri(context, intent, file);
-        intent.setDataAndType(/*uri*/uri, type);
+        intent.setDataAndType(uri, type);
         //跳转
 
         context.startActivity(intent);
@@ -263,7 +262,6 @@ public class FileUtils {
         } else {
             throw new FileNotFoundException();
         }
-
         return "";
     }
 }

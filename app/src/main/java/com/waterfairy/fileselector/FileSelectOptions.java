@@ -4,6 +4,12 @@ import android.text.TextUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+/**
+ * 修改主题色
+ * <color name="fileSelectorColorPrimary">#008577</color>
+ * <color name="fileSelectorColorPrimaryDark">#00574B</color>
+ * <color name="fileSelectorColorAccent">#D81B60</color>
+ */
 
 /**
  * @author water_fairy
@@ -12,39 +18,44 @@ import java.util.ArrayList;
  * @info:
  */
 public class FileSelectOptions implements Serializable {
+    private final long serialVersionUID = 20190801171010000L;
 
     public static final String SCREEN_ORIENTATION = "screen_orientation";
     public static final String OPTIONS_BEAN = "option_bean";
+
+    private int limitNum = -1;//数量限制
+    private long maxFileSize;//文件大小  B
+    private boolean showThumb;//false 展示默认图标 / true 显示预览图
+    private String selectType;//如:( ,png, )  或: ( ,jpg,png, ) (不要括号)
+    private boolean canSelect = true;//是否可以选择
+    private boolean canOpenFile = false;//是否点击预览文件
+    private boolean canSelectDir = false;//是否可以选择文件夹
+    private String pathAuthority;// fileProvider
+    private String[] ignorePaths;//FileSelectOptions.STYLE_ONLY_FILE有效
+    private boolean showHiddenFile = false;//显示隐藏文件
+    private boolean canOnlySelectCurrentDir = false;//只允许选择当前文件夹内的文件
+
+    /**
+     * 方向
+     */
     public static final int SCREEN_ORIENTATION_PORTRAIT = 1;
     public static final int SCREEN_ORIENTATION_LANDSCAPE = 0;
-    private final long serialVersionUID = 20190801171010000L;
     private int screenOrientation = -1;
-    private int limitNum = -1;
-    private boolean canSelect = true;//是否可以选择
-    private boolean canSelectDir = false;//是否可以选择文件夹
-    private String pathAuthority;//
-    private String selectType;//如:( ,png, )  或: ( ,jpg,png, ) (不要括号)
-    private boolean canOnlySelectCurrentDir = false;//只允许选择当前文件夹内的文件
-    private boolean showHiddenFile = false;//显示隐藏文件
-    private boolean canOpenFile = false;//显示隐藏文件
-    private long maxFileSize;//文件大小  B
-    private String[] ignorePaths;//FileSelectOptions.STYLE_ONLY_FILE有效
-    private int themeStyle;
-    private boolean showThumb;//false 展示默认图标 / true 显示预览图
 
+    /**
+     * 排序
+     */
     public static final int SORT_BY_NAME = 1;
     public static final int SORT_BY_NAME_DESC = 2;
     public static final int SORT_BY_TIME = 3;
     public static final int SORT_BY_TIME_DESC = 4;
-
     private int sortType = SORT_BY_NAME;
 
-
-    public static final int STYLE_ONLY_FILE = 1;//只有指定文件
-    public static final int STYLE_FOLDER_AND_FILE = 0;//文件夹和文件
     /**
      * 文件搜索类型
      */
+    public static final int STYLE_ONLY_FILE = 1;//只有指定文件
+    public static final int STYLE_FOLDER_AND_FILE = 0;//文件夹和文件
     private int searchStyle;
 
     public int getSearchStyle() {
@@ -171,8 +182,6 @@ public class FileSelectOptions implements Serializable {
         this.sortType = sortType;
         return this;
     }
-
-
 
     public boolean isShowThumb() {
         return showThumb;
