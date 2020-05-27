@@ -86,7 +86,7 @@ public class FileQueryTool {
                 if (fileTemp.isDirectory()) {
                     queryFileList.add(fileTemp);
                 } else {
-                    if (TextUtils.isEmpty(selectType) || selectType.contains("," + FileUtils.getType(fileTemp.getName()) + ",")) {
+                    if (TextUtils.isEmpty(selectType) || selectType.contains("," + FileUtils.getFileFormat(fileTemp.getName()) + ",")) {
                         queryFileList.add(fileTemp);
                     }
                 }

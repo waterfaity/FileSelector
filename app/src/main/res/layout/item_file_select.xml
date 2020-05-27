@@ -13,8 +13,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginLeft="15dp"
-        android:src="@mipmap/ic_unknown"
-        android:tint="@color/fileSelectorColorPrimary" />
+        android:src="@mipmap/ic_unknown" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -62,5 +61,14 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="10dp" />
+
+    <View
+        android:id="@+id/checkbox_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/checkbox"
+        android:layout_alignTop="@+id/checkbox"
+        android:layout_alignRight="@+id/checkbox"
+        android:layout_alignBottom="@+id/checkbox" />
 
 </RelativeLayout>

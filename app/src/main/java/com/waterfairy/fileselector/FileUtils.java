@@ -5,9 +5,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import com.bumptech.glide.load.resource.bitmap.FitCenter;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
+
+import androidx.annotation.NonNull;
 
 /**
  * @author water_fairy
@@ -28,71 +32,113 @@ public class FileUtils {
         return hashMap;
     }
 
+
+    //类型后缀
     public static final String TYPE_AUDIO = ",MP3,WMA,FLAC,AAC,MMF,AMR,M4A,M4R,OGG,MP2,WAV,WV," +
             "mp3,wma,flac,aac,mmf,amr,m4a,m4r,ogg,mp2,wav,wv,";
     public static final String TYPE_VIDEO = ",RM,RMVB,MPEG1,MPEG2,MPEG3,MPEG4,MOV,MTV,WMV,AVI,3GP,AMV,DMV,FLV," +
             "rm,rmvb,mpeg1,mpeg2,mpeg3,mpeg4,mov,mtv,wmv,avi,3gp,amv,dmv,flv,mp4,";
     public static final String TYPE_JPG = ",PNG,JEPG,JPG,BMP,GIF," +
             "png,jepg,jpg,bmp,gif,";
+    public static final String TYPE_PDF = ",PDF,pdf,";
+    public static final String TYPE_WORD = ",doc,DOC,docx,DOCX,";
+    public static final String TYPE_PPT = ",ppt,pptx,PPT,PPTX,";
+    public static final String TYPE_EXCEL = ",xls,xlsx,";
+    public static final String TYPE_TXT = ",txt,TXT,";
+    public static final String TYPE_HTML = ",HTML,html,";
+    public static final String TYPE_DATABASE = ",DB,db,";
 
-    public static int getIcon(String name) {
+    //类型
+    public static final String FILE_TYPE_AUDIO = "audio";
+    public static final String FILE_TYPE_IMAGE = "image";
+    public static final String FILE_TYPE_VIDEO = "video";
+    public static final String FILE_TYPE_PDF = "pdf";
+    public static final String FILE_TYPE_WORD = "word";
+    public static final String FILE_TYPE_PPT = "ppt";
+    public static final String FILE_TYPE_EXCEL = "excel";
+    public static final String FILE_TYPE_TXT = "txt";
+    public static final String FILE_TYPE_HTML = "html";
+    public static final String FILE_TYPE_DATABASE = "database";
+    public static final String FILE_TYPE_UNKNOWN = "unknown";
+
+    public static int getIcon(String fileName) {
         if (hashMap == null) {
             initHashMap();
         }
-        if (!TextUtils.isEmpty(name)) {
-            String type = getType(name);
+        return hashMap.get(getFileType(fileName));
+    }
+
+    public static int getIconFromFileType(String fileType) {
+        if (hashMap == null) {
+            initHashMap();
+        }
+        if (TextUtils.isEmpty(fileType)) {
+            fileType = FILE_TYPE_UNKNOWN;
+        }
+        Integer resId = hashMap.get(fileType);
+        if (resId == null) resId = hashMap.get(FILE_TYPE_UNKNOWN);
+        return resId;
+    }
+
+    public static String getFileType(String fileName) {
+        if (!TextUtils.isEmpty(fileName)) {
+            String type = getFileFormat(fileName);
             if (!TextUtils.isEmpty(type)) {
                 type = "," + type + ",";
                 if (TYPE_AUDIO.contains(type)) {
-                    return hashMap.get("audio");
+                    return FILE_TYPE_AUDIO;
                 } else if (TYPE_JPG.contains(type)) {
-                    return hashMap.get("image");
+                    return FILE_TYPE_IMAGE;
                 } else if (TYPE_VIDEO.contains(type)) {
-                    return hashMap.get("video");
-                } else if (",PDF,pdf,".contains(type)) {
-                    return hashMap.get("pdf");
-                } else if (",doc,DOC,docx,DOCX,".contains(type)) {
-                    return hashMap.get("word");
-                } else if (",ppt,pptx,PPT,PPTX,".contains(type)) {
-                    return hashMap.get("ppt");
-                } else if (",xls,xlsx,".contains(type)) {
-                    return hashMap.get("excel");
-                } else if (",txt,TXT,".contains(type)) {
-                    return hashMap.get("txt");
-                } else if (",HTML,html,".contains(type)) {
-                    return hashMap.get("html");
-                } else if (",DB,db,".contains(type)) {
-                    return hashMap.get("database");
+                    return FILE_TYPE_VIDEO;
+                } else if (TYPE_PDF.contains(type)) {
+                    return FILE_TYPE_PDF;
+                } else if (TYPE_WORD.contains(type)) {
+                    return FILE_TYPE_WORD;
+                } else if (TYPE_PPT.contains(type)) {
+                    return FILE_TYPE_PPT;
+                } else if (TYPE_EXCEL.contains(type)) {
+                    return FILE_TYPE_EXCEL;
+                } else if (TYPE_TXT.contains(type)) {
+                    return FILE_TYPE_TXT;
+                } else if (TYPE_HTML.contains(type)) {
+                    return FILE_TYPE_HTML;
+                } else if (TYPE_DATABASE.contains(type)) {
+                    return FILE_TYPE_DATABASE;
                 }
             }
         }
-        return hashMap.get("unknown");
+        return FILE_TYPE_UNKNOWN;
     }
 
     private static void initHashMap() {
         hashMap = new HashMap<>();
-        hashMap.put("image", R.mipmap.ic_img);
-        hashMap.put("pdf", R.mipmap.ic_pdf);
-        hashMap.put("word", R.mipmap.ic_word);
-        hashMap.put("excel", R.mipmap.ic_excel);
-        hashMap.put("ppt", R.mipmap.ic_ppt);
-        hashMap.put("txt", R.mipmap.ic_text);
-        hashMap.put("html", R.mipmap.ic_html);
-        hashMap.put("database", R.mipmap.ic_database);
-        hashMap.put("video", R.mipmap.ic_video);
-        hashMap.put("audio", R.mipmap.ic_audio);
-        hashMap.put("unknown", R.mipmap.ic_unknown);
+        hashMap.put(FILE_TYPE_IMAGE, R.mipmap.ic_img);
+        hashMap.put(FILE_TYPE_PDF, R.mipmap.ic_pdf);
+        hashMap.put(FILE_TYPE_WORD, R.mipmap.ic_word);
+        hashMap.put(FILE_TYPE_EXCEL, R.mipmap.ic_excel);
+        hashMap.put(FILE_TYPE_PPT, R.mipmap.ic_ppt);
+        hashMap.put(FILE_TYPE_TXT, R.mipmap.ic_text);
+        hashMap.put(FILE_TYPE_HTML, R.mipmap.ic_html);
+        hashMap.put(FILE_TYPE_DATABASE, R.mipmap.ic_database);
+        hashMap.put(FILE_TYPE_VIDEO, R.mipmap.ic_video);
+        hashMap.put(FILE_TYPE_AUDIO, R.mipmap.ic_audio);
+        hashMap.put(FILE_TYPE_UNKNOWN, R.mipmap.ic_unknown);
     }
 
-    static String getType(String fileName) {
+    public static String getFileFormat(String fileName) {
         if (TextUtils.isEmpty(fileName)) return "";
         int index = fileName.lastIndexOf(".");
-        return fileName.substring(index + 1, fileName.length());
+        return fileName.substring(index + 1);
     }
 
 
     public static String getFileLen(File file) {
-        long length = file.length();
+        return getLenTrans(file.length());
+
+    }
+
+    public static String getLenTrans(long length) {
         if (length < 1024) {
             return length + "B";
         } else if (length < 1024 * 1024) {

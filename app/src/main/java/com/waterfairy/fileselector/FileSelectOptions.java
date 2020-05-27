@@ -29,6 +29,8 @@ public class FileSelectOptions implements Serializable {
     private boolean canOpenFile = false;//显示隐藏文件
     private long maxFileSize;//文件大小  B
     private String[] ignorePaths;//FileSelectOptions.STYLE_ONLY_FILE有效
+    private int themeStyle;
+    private boolean showThumb;//false 展示默认图标 / true 显示预览图
 
     public static final int SORT_BY_NAME = 1;
     public static final int SORT_BY_NAME_DESC = 2;
@@ -167,6 +169,24 @@ public class FileSelectOptions implements Serializable {
 
     public FileSelectOptions setSortType(int sortType) {
         this.sortType = sortType;
+        return this;
+    }
+
+    public int getThemeStyle() {
+        return themeStyle;
+    }
+
+    public FileSelectOptions setThemeStyle(int themeStyle) {
+        this.themeStyle = themeStyle;
+        return this;
+    }
+
+    public boolean isShowThumb() {
+        return showThumb;
+    }
+
+    public FileSelectOptions setShowThumb(boolean showThumb) {
+        this.showThumb = showThumb;
         return this;
     }
 

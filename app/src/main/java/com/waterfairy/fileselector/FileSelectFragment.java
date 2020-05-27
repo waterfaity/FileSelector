@@ -297,12 +297,13 @@ public class FileSelectFragment extends Fragment implements FileAdapter.OnClickI
             mAdapter = new FileAdapter(getActivity(), fileListBean);
             mAdapter.setMaxFileSize(getOptions().getMaxFileSize());
             mAdapter.setSortType(getOptions().getSortType());
-            mAdapter.setData(fileListBean);
             mAdapter.setCanSelect(getOptions().isCanSelect(), getOptions().getLimitNum());
             mAdapter.setCanSelectDir(getOptions().isCanSelectDir());
             mAdapter.setCanOnlySelectCurrentDir(getOptions().isCanOnlySelectCurrentDir());
+            mAdapter.setShowThumb(getOptions().isShowThumb());
             mAdapter.setOnClickItemListener(this);
             mAdapter.setOnFileSelectListener(onFileSelectListener);
+            mAdapter.setData(fileListBean);
             mRecyclerView.setAdapter(mAdapter);
         } else {
             mAdapter.setData(fileListBean);

@@ -20,29 +20,30 @@ public class TestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
 
+        int themeStyle = getIntent().getIntExtra("themeStyle", 0);
         FileSearchConfig fileSearchConfig = FileSearchConfig.defaultInstance();
         Uri externalContentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;//content://media/external/images/media
 //        Uri externalContentUri = MediaStore.Files.getContentUri("external");//content://media/external/file
         Log.i(TAG, "onCreate: " + externalContentUri);
         fileSearchConfig.setContentUri(externalContentUri);
         fileSearchConfig.setExtensions(".jpg", ".png", ".gif");
-        getVideo(this, 12);
+        getVideo(this, themeStyle, 12);
 
     }
 
 
-    private void getVideo(Activity activity, int limitNum) {
-        FileSelector.with(activity).option(getFileSelectOptions().setLimitNum(limitNum)).execute(1001);
+    private void getVideo(Activity activity, int themeStyle, int limitNum) {
+        FileSelector.with(activity).option(getFileSelectOptions().setShowThumb(true).setThemeStyle(themeStyle).setLimitNum(limitNum)).execute(1001);
     }
 
     private FileSelectOptions getFileSelectOptions() {
         return new FileSelectOptions()
                 .setCanOpenFile(true)
                 .setCanSelect(true)
-                .setMaxFileSize(2 * 1024 * 1024)//2M
+                .setMaxFileSize(10 * 1024 * 1024)//2M
                 .setPathAuthority(ProviderUtils.authority)
                 .setSearchStyle(FileSelectOptions.STYLE_ONLY_FILE)
-                .setSelectType(",mp4,mp3,jpg,")
+                .setSelectType(",mp4,mp3")
                 .setSortType(FileSelectOptions.SORT_BY_NAME)
                 .setIgnorePaths(Environment.getExternalStorageDirectory().getAbsolutePath() + "/WisDomCloud");//FileSelectOptions.STYLE_ONLY_FILE
     }

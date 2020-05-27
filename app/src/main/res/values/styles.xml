@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/fileSelectorColorPrimary</item>
         <item name="colorPrimaryDark">@color/fileSelectorColorPrimaryDark</item>
         <item name="colorAccent">@color/fileSelectorColorAccent</item>
+
     </style>
 
     <style name="LoadingDialogTheme" parent="Base.Theme.AppCompat.Dialog">

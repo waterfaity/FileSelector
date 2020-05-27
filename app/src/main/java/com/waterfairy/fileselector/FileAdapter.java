@@ -43,17 +43,20 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> im
     private OnFileSelectListener onFileSelectListener;
     private int sortType = SORT_BY_NAME;
     private long maxFileSize;
+    private int colorPrimary;
+    private boolean showThumb;
 
     public void setSortType(int sortType) {
         this.sortType = sortType;
     }
 
     public FileAdapter(Context mContext) {
-        this.mContext = mContext;
+        this(mContext, null);
     }
 
     public FileAdapter(Context mContext, FileListBean fileListBean) {
         this.mContext = mContext;
+        colorPrimary = mContext.getResources().getColor(R.color.fileSelectorColorPrimary);
         setData(fileListBean);
     }
 
@@ -79,7 +82,8 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> im
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
+        holder.mCheckboxTop.setOnClickListener(null);
+        holder.mCheckboxTop.setClickable(false);
         if (holder.itemView.getAlpha() != 1)
             holder.itemView.setAlpha(1);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -132,18 +136,28 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> im
                         //不可选择
                         holder.mCheckBox.setEnabled(false);
                         holder.itemView.setAlpha(0.6F);
+                        holder.mCheckboxTop.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                ToastShowTool.show("文件限制大小:" + FileUtils.getLenTrans(maxFileSize));
+                            }
+                        });
                     } else {
                         //可以选择
                         holder.mCheckBox.setEnabled(true);
                     }
-
-
                     holder.mViewSelectState.setVisibility(View.GONE);
-                    int resId = FileUtils.getIcon(name);
-                    if (resId == R.mipmap.ic_img)
+                    String fileType = FileUtils.getFileType(name);
+
+                    if (showThumb && (TextUtils.equals(fileType, FileUtils.FILE_TYPE_IMAGE) || TextUtils.equals(fileType, FileUtils.FILE_TYPE_VIDEO))) {
+                        //图片
                         Glide.with(mContext).load(file).into(holder.mIVIcon);
-                    else
-                        holder.mIVIcon.setImageResource(FileUtils.getIcon(name));
+                    } else {
+                        int iconFromFileType = FileUtils.getIconFromFileType(fileType);
+                        //其他
+                        holder.mIVIcon.setImageResource(iconFromFileType);
+                        ImageViewTintUtils.setTint(holder.mIVIcon, colorPrimary, iconFromFileType);
+                    }
                 }
                 //名字
                 holder.mTVName.setText(name);
@@ -367,6 +381,7 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> im
         private TextView mTVName, mTVInfo;
         private CheckBox mCheckBox;
         private View mViewSelectState;
+        private View mCheckboxTop;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -375,7 +390,12 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> im
             mTVName = itemView.findViewById(R.id.name);
             mTVInfo = itemView.findViewById(R.id.info);
             mCheckBox = itemView.findViewById(R.id.checkbox);
+            mCheckboxTop = itemView.findViewById(R.id.checkbox_top);
         }
+    }
+
+    public void setShowThumb(boolean showThumb) {
+        this.showThumb = showThumb;
     }
 
     private OnClickItemListener onClickItemListener;
