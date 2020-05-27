@@ -27,6 +27,7 @@ public class FileSelectOptions implements Serializable {
     private boolean canOnlySelectCurrentDir = false;//只允许选择当前文件夹内的文件
     private boolean showHiddenFile = false;//显示隐藏文件
     private boolean canOpenFile = false;//显示隐藏文件
+    private long maxFileSize;//文件大小  B
     private String[] ignorePaths;//FileSelectOptions.STYLE_ONLY_FILE有效
 
     public static final int SORT_BY_NAME = 1;
@@ -149,6 +150,15 @@ public class FileSelectOptions implements Serializable {
             return extensions;
         }
         return new String[]{};
+    }
+
+    public long getMaxFileSize() {
+        return maxFileSize;
+    }
+
+    public FileSelectOptions setMaxFileSize(long maxFileSize) {
+        this.maxFileSize = maxFileSize;
+        return this;
     }
 
     public int getSortType() {

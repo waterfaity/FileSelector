@@ -32,15 +32,17 @@ public class TestActivity extends AppCompatActivity {
 
 
     private void getVideo(Activity activity, int limitNum) {
-        FileSelector.with(activity).option(getFileSelectOptions().setLimitNum(limitNum).setSelectType("")).execute(1001);
+        FileSelector.with(activity).option(getFileSelectOptions().setLimitNum(limitNum)).execute(1001);
     }
 
     private FileSelectOptions getFileSelectOptions() {
         return new FileSelectOptions()
                 .setCanOpenFile(true)
                 .setCanSelect(true)
+                .setMaxFileSize(2 * 1024 * 1024)//2M
                 .setPathAuthority(ProviderUtils.authority)
                 .setSearchStyle(FileSelectOptions.STYLE_ONLY_FILE)
+                .setSelectType(",mp4,mp3,jpg,")
                 .setSortType(FileSelectOptions.SORT_BY_NAME)
                 .setIgnorePaths(Environment.getExternalStorageDirectory().getAbsolutePath() + "/WisDomCloud");//FileSelectOptions.STYLE_ONLY_FILE
     }

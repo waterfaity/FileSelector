@@ -80,7 +80,7 @@ public class FileSelectFragment extends Fragment implements FileAdapter.OnClickI
         if (options.getSearchStyle() == FileSelectOptions.STYLE_FOLDER_AND_FILE) {
             if (fileQueryTool == null) {
                 fileQueryTool = new FileQueryTool();
-                fileQueryTool.setSearchStyle(options.getSearchStyle());
+                fileQueryTool.setSearchStyle(getOptions().getSearchStyle());
                 fileQueryTool.setSearchHiddenFile(getOptions().isShowHiddenFile());
                 fileQueryTool.setSelectType(getOptions().getSelectType());
                 fileQueryTool.setOnFileQueryListener(this);
@@ -295,6 +295,7 @@ public class FileSelectFragment extends Fragment implements FileAdapter.OnClickI
         mTVPath.setText(fileListBean.getFile().getAbsolutePath());
         if (mAdapter == null) {
             mAdapter = new FileAdapter(getActivity(), fileListBean);
+            mAdapter.setMaxFileSize(getOptions().getMaxFileSize());
             mAdapter.setSortType(getOptions().getSortType());
             mAdapter.setData(fileListBean);
             mAdapter.setCanSelect(getOptions().isCanSelect(), getOptions().getLimitNum());

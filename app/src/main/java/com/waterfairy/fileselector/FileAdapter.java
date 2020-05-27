@@ -42,6 +42,7 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> im
     private boolean canOnlySelectCurrentDir = true;//只能选择当前文件夹的文件
     private OnFileSelectListener onFileSelectListener;
     private int sortType = SORT_BY_NAME;
+    private long maxFileSize;
 
     public void setSortType(int sortType) {
         this.sortType = sortType;
@@ -79,6 +80,8 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> im
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
+        if (holder.itemView.getAlpha() != 1)
+            holder.itemView.setAlpha(1);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,6 +95,7 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> im
                 }
             }
         });
+
 
         boolean jumpZero = false;
         int filePos = 0;
@@ -123,6 +127,17 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> im
                     boolean b = checkSelect(file);
                     holder.mViewSelectState.setVisibility(b ? View.VISIBLE : View.GONE);
                 } else {
+
+                    if (maxFileSize != 0 && file.length() > maxFileSize) {
+                        //不可选择
+                        holder.mCheckBox.setEnabled(false);
+                        holder.itemView.setAlpha(0.6F);
+                    } else {
+                        //可以选择
+                        holder.mCheckBox.setEnabled(true);
+                    }
+
+
                     holder.mViewSelectState.setVisibility(View.GONE);
                     int resId = FileUtils.getIcon(name);
                     if (resId == R.mipmap.ic_img)
@@ -337,6 +352,14 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> im
 
     public OnFileSelectListener getOnFileSelectListener() {
         return onFileSelectListener;
+    }
+
+    public void setMaxFileSize(long maxFileSize) {
+        this.maxFileSize = maxFileSize;
+    }
+
+    public long getMaxFileSize() {
+        return maxFileSize;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
