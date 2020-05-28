@@ -153,7 +153,7 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> im
                     if (showThumb && (TextUtils.equals(fileType, FileUtils.FILE_TYPE_IMAGE) || TextUtils.equals(fileType, FileUtils.FILE_TYPE_VIDEO))) {
                         //图片
                         ImageLoader.with(mContext).load(file).into(holder.mIVIcon);
-                        Glide.with(mContext).load(file).into(holder.mIVIcon1);
+//                        Glide.with(mContext).load(file).into(holder.mIVIcon);
                     } else {
                         int iconFromFileType = FileUtils.getIconFromFileType(fileType);
                         //其他
@@ -380,7 +380,6 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> im
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView mIVIcon;
-        private ImageView mIVIcon1;
         private TextView mTVName, mTVInfo;
         private CheckBox mCheckBox;
         private View mViewSelectState;
@@ -389,7 +388,6 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> im
         public ViewHolder(View itemView) {
             super(itemView);
             mIVIcon = itemView.findViewById(R.id.img);
-            mIVIcon1 = itemView.findViewById(R.id.img1);
             mViewSelectState = itemView.findViewById(R.id.view_select_state);
             mTVName = itemView.findViewById(R.id.name);
             mTVInfo = itemView.findViewById(R.id.info);
