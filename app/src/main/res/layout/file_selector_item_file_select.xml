@@ -12,14 +12,24 @@
         android:id="@+id/img"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:scaleType="centerCrop"
         android:layout_marginLeft="15dp"
+        android:src="@mipmap/file_selector_ic_unknown" />
+
+    <ImageView
+        android:scaleType="centerCrop"
+        android:id="@+id/img1"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="15dp"
+        android:layout_toRightOf="@+id/img"
         android:src="@mipmap/file_selector_ic_unknown" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/img"
+        android:layout_toRightOf="@+id/img1"
         android:orientation="vertical">
 
         <TextView

@@ -51,7 +51,7 @@ public class TestActivity extends AppCompatActivity {
                 .setMaxFileSize(10 * 1024 * 1024)//2M
                 .setPathAuthority(ProviderUtils.authority)
                 .setSearchStyle(FileSelectOptions.STYLE_ONLY_FILE)
-                .setSelectType(",mp4,mp3")
+                .setSelectType(",jpg,")
                 .setSortType(FileSelectOptions.SORT_BY_NAME)
                 .setIgnorePaths(Environment.getExternalStorageDirectory().getAbsolutePath() + "/WisDomCloud");//FileSelectOptions.STYLE_ONLY_FILE
     }

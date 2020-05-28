@@ -4,7 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 /**
  * 修改主题色
