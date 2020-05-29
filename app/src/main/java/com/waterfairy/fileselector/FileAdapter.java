@@ -149,10 +149,9 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> im
                     holder.mViewSelectState.setVisibility(View.GONE);
                     String fileType = FileUtils.getFileType(name);
 
-                    if (showThumb && (TextUtils.equals(fileType, FileUtils.FILE_TYPE_IMAGE) || TextUtils.equals(fileType, FileUtils.FILE_TYPE_VIDEO))) {
+                    if (showThumb && (TextUtils.equals(fileType, FileUtils.FILE_TYPE_IMAGE))) {
                         //图片
                         ImageLoader.with(mContext).load(file).into(holder.mIVIcon);
-//                        Glide.with(mContext).load(file).into(holder.mIVIcon);
                     } else {
                         int iconFromFileType = FileUtils.getIconFromFileType(fileType);
                         //其他
