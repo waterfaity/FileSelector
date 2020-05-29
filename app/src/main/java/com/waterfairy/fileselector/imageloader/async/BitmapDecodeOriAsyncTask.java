@@ -89,7 +89,7 @@ public class BitmapDecodeOriAsyncTask extends AsyncTask<Object, Void, Bitmap> {
                 //计算指数 double类型  ->  int
                 //设置采样率 2的N次方
                 options.inSampleSize = (int) (targetWidth / (float) viewWidth);
-                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+//                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
                 //根据配置截取指定区域图片(inSampleSize / inPreferredConfig)
                 //未旋转的图像
                 Bitmap bitmap = bitmapRegionDecoder.decodeRegion(rect, options);
