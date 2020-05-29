@@ -95,7 +95,6 @@ public class BitmapDecodeOriAsyncTask extends AsyncTask<Object, Void, Bitmap> {
                 Bitmap bitmap = bitmapRegionDecoder.decodeRegion(rect, options);
 
                 Bitmap bitmapResult;
-
                 //旋转
                 if (rotate != 0) {
                     Matrix matrix = new Matrix();
