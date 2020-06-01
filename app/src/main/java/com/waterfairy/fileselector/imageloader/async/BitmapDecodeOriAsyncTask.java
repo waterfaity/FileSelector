@@ -2,7 +2,6 @@ package com.waterfairy.fileselector.imageloader.async;
 
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.waterfairy.fileselector.imageloader.decode.BitmapDecoder;
 import com.waterfairy.fileselector.imageloader.transform.Transform;

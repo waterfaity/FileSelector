@@ -1,7 +1,6 @@
 package com.waterfairy.fileselector.imageloader.transform;
 
 import android.graphics.Bitmap;
-import android.graphics.Rect;
 
 /**
  * @author water_fairy

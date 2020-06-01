@@ -8,7 +8,6 @@ import com.waterfairy.fileselector.imageloader.async.BitmapSaveAsyncTask;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.ref.WeakReference;
 
 /**
  * @author water_fairy

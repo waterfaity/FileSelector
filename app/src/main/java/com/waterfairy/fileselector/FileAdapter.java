@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.waterfairy.fileselector.imageloader.ImageLoader;
-import com.waterfairy.fileselector.imageloader.transform.CenterTransform;
 
 import java.io.File;
 import java.util.ArrayList;

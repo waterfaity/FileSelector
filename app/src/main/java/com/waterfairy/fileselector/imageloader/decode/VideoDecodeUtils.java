@@ -1,15 +1,8 @@
 package com.waterfairy.fileselector.imageloader.decode;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.MediaMetadataRetriever;
-import android.media.ThumbnailUtils;
-import android.os.Build;
-import android.provider.MediaStore;
-
-import java.io.IOException;
-import java.util.HashMap;
 
 /**
  * @author water_fairy

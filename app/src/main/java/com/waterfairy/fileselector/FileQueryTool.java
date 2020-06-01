@@ -27,7 +27,6 @@ public class FileQueryTool {
     }
 
 
-
     private OnFileQueryListener onFileQueryListener;
 
     public void setOnFileQueryListener(OnFileQueryListener onFileQueryListener) {
@@ -104,6 +103,7 @@ public class FileQueryTool {
         }
         return true;
     }
+
     public interface OnFileQueryListener {
         void onQueryFile(FileListBean fileListBean);
     }

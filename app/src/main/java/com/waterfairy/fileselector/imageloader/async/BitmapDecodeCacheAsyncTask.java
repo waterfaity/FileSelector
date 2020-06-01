@@ -11,7 +11,7 @@ import android.os.AsyncTask;
  * @info:
  */
 public class BitmapDecodeCacheAsyncTask extends AsyncTask<String, Void, Bitmap> {
-     private final String TAG = "DecodeFileAsync";
+    private final String TAG = "DecodeFileAsync";
 
     @Override
     protected Bitmap doInBackground(String... objects) {

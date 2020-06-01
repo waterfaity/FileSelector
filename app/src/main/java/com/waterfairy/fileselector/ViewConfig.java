@@ -16,7 +16,7 @@ public class ViewConfig implements Parcelable {
     private int actionBarHeight;//actionBar  高度
     private int menuHeight;//确认按钮高度
     private int menuBgRes;//确认按钮背景颜色
-    private int menuMarginRight=-1;
+    private int menuMarginRight = -1;
     private String title;
 
     public int getMenuMarginRight() {

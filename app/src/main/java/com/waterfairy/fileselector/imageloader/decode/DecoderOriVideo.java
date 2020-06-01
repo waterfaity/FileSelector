@@ -3,7 +3,6 @@ package com.waterfairy.fileselector.imageloader.decode;
 import android.os.AsyncTask;
 import android.widget.ImageView;
 
-import com.waterfairy.fileselector.imageloader.async.BitmapDecodeOriAsyncTask;
 import com.waterfairy.fileselector.imageloader.async.VideoDecodeOriAsyncTask;
 import com.waterfairy.fileselector.imageloader.transform.Transform;
 

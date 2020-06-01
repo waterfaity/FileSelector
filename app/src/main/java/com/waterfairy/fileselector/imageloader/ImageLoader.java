@@ -3,7 +3,6 @@ package com.waterfairy.fileselector.imageloader;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.ImageView;
 
 import com.waterfairy.fileselector.imageloader.decode.DecoderCache;
