@@ -6,7 +6,7 @@ import android.graphics.BitmapRegionDecoder;
 import android.graphics.Matrix;
 import android.graphics.Rect;
 
-import com.waterfairy.fileselector.imageloader.ImageRotateTool;
+import com.waterfairy.fileselector.imageloader.tool.ImageRotateTool;
 
 import java.io.IOException;
 

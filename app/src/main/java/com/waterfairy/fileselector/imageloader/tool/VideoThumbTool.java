@@ -1,4 +1,4 @@
-package com.waterfairy.fileselector.imageloader.decode;
+package com.waterfairy.fileselector.imageloader.tool;
 
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -10,7 +10,7 @@ import android.media.MediaMetadataRetriever;
  * @date 2020/6/1 18:26
  * @info:
  */
-public class VideoDecodeUtils {
+public class VideoThumbTool {
 
     public static Bitmap createVideoThumbnail(String url, int maxWidth, int maxHeight) {
         Bitmap bitmap = null;

@@ -5,9 +5,11 @@ import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
-import com.waterfairy.fileselector.imageloader.decode.DecoderCache;
-import com.waterfairy.fileselector.imageloader.decode.DecoderOri;
-import com.waterfairy.fileselector.imageloader.decode.DecoderOriVideo;
+import com.waterfairy.fileselector.imageloader.cache.ImageCache;
+import com.waterfairy.fileselector.imageloader.cache.ImageCacheLocal;
+import com.waterfairy.fileselector.imageloader.reference.DecoderCache;
+import com.waterfairy.fileselector.imageloader.reference.DecoderOri;
+import com.waterfairy.fileselector.imageloader.reference.DecoderOriVideo;
 import com.waterfairy.fileselector.imageloader.transform.Transform;
 
 import java.io.File;

@@ -1,4 +1,4 @@
-package com.waterfairy.fileselector.imageloader;
+package com.waterfairy.fileselector.imageloader.tool;
 
 import android.media.ExifInterface;
 

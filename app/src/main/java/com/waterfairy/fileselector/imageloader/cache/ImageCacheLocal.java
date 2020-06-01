@@ -1,4 +1,4 @@
-package com.waterfairy.fileselector.imageloader;
+package com.waterfairy.fileselector.imageloader.cache;
 
 import android.content.Context;
 import android.graphics.Bitmap;

@@ -1,9 +1,9 @@
-package com.waterfairy.fileselector.imageloader.decode;
+package com.waterfairy.fileselector.imageloader.reference;
 
 import android.os.AsyncTask;
 import android.widget.ImageView;
 
-import com.waterfairy.fileselector.imageloader.async.VideoDecodeOriAsyncTask;
+import com.waterfairy.fileselector.imageloader.async.VideoDecodeAsyncTask;
 import com.waterfairy.fileselector.imageloader.transform.Transform;
 
 import java.lang.ref.WeakReference;
@@ -15,7 +15,7 @@ import java.util.List;
  * @date 2020/5/28 19:41
  * @info:
  */
-public class DecoderOriVideo extends VideoDecodeOriAsyncTask {
+public class DecoderOriVideo extends VideoDecodeAsyncTask {
     private WeakReference<String> path;
     protected WeakReference<String> key;
     private WeakReference<Integer> viewWidth;

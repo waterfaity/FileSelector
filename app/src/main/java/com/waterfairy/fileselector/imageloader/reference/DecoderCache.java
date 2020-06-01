@@ -1,4 +1,4 @@
-package com.waterfairy.fileselector.imageloader.decode;
+package com.waterfairy.fileselector.imageloader.reference;
 
 import android.os.AsyncTask;
 import android.widget.ImageView;

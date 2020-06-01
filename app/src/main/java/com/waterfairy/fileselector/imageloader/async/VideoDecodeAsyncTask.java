@@ -3,7 +3,7 @@ package com.waterfairy.fileselector.imageloader.async;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 
-import com.waterfairy.fileselector.imageloader.decode.VideoDecodeUtils;
+import com.waterfairy.fileselector.imageloader.tool.VideoThumbTool;
 import com.waterfairy.fileselector.imageloader.transform.Transform;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
  * @date 2020/5/28 14:43
  * @info:
  */
-public class VideoDecodeOriAsyncTask extends AsyncTask<Object, Void, Bitmap> {
+public class VideoDecodeAsyncTask extends AsyncTask<Object, Void, Bitmap> {
     private final String TAG = "DecodeFileAsync";
 
     @Override
@@ -25,7 +25,7 @@ public class VideoDecodeOriAsyncTask extends AsyncTask<Object, Void, Bitmap> {
             int viewHeight = (int) objects[2];
             List<Transform> transforms = (List<Transform>) objects[3];
             long time = System.currentTimeMillis();
-            Bitmap decodeBitmap = VideoDecodeUtils.createVideoThumbnail(path, viewWidth, viewHeight);
+            Bitmap decodeBitmap = VideoThumbTool.createVideoThumbnail(path, viewWidth, viewHeight);
             if (decodeBitmap != null) {
                 if (transforms != null) {
                     for (int i = 0; i < transforms.size(); i++) {
