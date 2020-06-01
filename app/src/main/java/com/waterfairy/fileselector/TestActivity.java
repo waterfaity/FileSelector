@@ -22,7 +22,7 @@ public class TestActivity extends AppCompatActivity {
         FileSearchConfig fileSearchConfig = FileSearchConfig.defaultInstance();
         Uri externalContentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;//content://media/external/images/media
 //        Uri externalContentUri = MediaStore.Files.getContentUri("external");//content://media/external/file
-        Log.i(TAG, "onCreate: " + externalContentUri);
+//        Log.i(TAG, "onCreate: " + externalContentUri);
         fileSearchConfig.setContentUri(externalContentUri);
         fileSearchConfig.setExtensions(".jpg", ".png", ".gif");
         getVideo(this, 12);
@@ -51,7 +51,7 @@ public class TestActivity extends AppCompatActivity {
                 .setMaxFileSize(10 * 1024 * 1024)//2M
                 .setPathAuthority(ProviderUtils.authority)
                 .setSearchStyle(FileSelectOptions.STYLE_ONLY_FILE)
-                .setSelectType(",jpg,")
+                .setSelectType(",mp4,jpg,")
                 .setSortType(FileSelectOptions.SORT_BY_NAME)
                 .setIgnorePaths(Environment.getExternalStorageDirectory().getAbsolutePath() + "/WisDomCloud");//FileSelectOptions.STYLE_ONLY_FILE
     }

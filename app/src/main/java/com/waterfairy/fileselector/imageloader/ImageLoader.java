@@ -3,13 +3,18 @@ package com.waterfairy.fileselector.imageloader;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.waterfairy.fileselector.imageloader.decode.DecoderCache;
 import com.waterfairy.fileselector.imageloader.decode.DecoderOri;
+import com.waterfairy.fileselector.imageloader.decode.DecoderOriVideo;
+import com.waterfairy.fileselector.imageloader.transform.Transform;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author water_fairy
@@ -28,6 +33,8 @@ public class ImageLoader {
     private String path;
     private ImageView imageView;
 
+    private final List<Transform> transforms = new ArrayList<>();
+
     private ImageLoader(Context context) {
         this.context = context;
     }
@@ -43,6 +50,11 @@ public class ImageLoader {
 
     public ImageLoader load(File file) {
         this.path = file.getAbsolutePath();
+        return this;
+    }
+
+    public ImageLoader transform(Transform transform) {
+        transforms.add(transform);
         return this;
     }
 
@@ -75,7 +87,7 @@ public class ImageLoader {
     }
 
     private void onSize() {
-        String key = MD5Utils.getMD5Code(path + ":" + imageView.getWidth() + "-" + imageView.getHeight());
+        String key = MD5Utils.getMD5Code(path + ";wh:" + imageView.getWidth() + "-" + imageView.getHeight() + ";transform:" + getTransformKey());
         imageView.setTag(IMAGE_LOADER_KEY, key);
         Bitmap bitmap = ImageCache.getInstance().get(key);
         if (bitmap == null || bitmap.isRecycled()) {
@@ -84,20 +96,34 @@ public class ImageLoader {
             boolean cacheExist = ImageCacheLocal.isCacheExist(context, key);
             if (!cacheExist) {
                 //原图获取
-                decodeOri(path, key, imageView.getWidth(), imageView.getHeight());
+//                Log.i(TAG, "onSize: 加载原图");
+                if (path.endsWith(".mp4")) {
+                    decodeVideo(path, key, imageView.getWidth(), imageView.getHeight());
+                } else {
+                    decodeOri(path, key, imageView.getWidth(), imageView.getHeight());
+                }
             } else {
                 //本地缓存
+//                Log.i(TAG, "onSize: 加载缓存");
                 decodeCache(key);
             }
         } else {
             imageView.setImageBitmap(bitmap);
+//            Log.i(TAG, "onSize: 加载内存");
         }
+    }
+
+    private String getTransformKey() {
+        StringBuilder key = new StringBuilder();
+        for (int i = 0; i < transforms.size(); i++) {
+            key.append(transforms.get(i).getKey());
+        }
+        return key.toString();
     }
 
     /**
      * 从本地缓存获取
      *
-     * @param path
      * @param key
      */
     private void decodeCache(String key) {
@@ -141,11 +167,45 @@ public class ImageLoader {
         if (tag instanceof DecoderOri && !((DecoderOri) tag).isCancelled()) {
             ((DecoderOri) tag).cancel(true);
         }
-        DecoderOri decoder = new DecoderOri(imageView, key, path, viewWidth, viewHeight) {
+        DecoderOri decoder = new DecoderOri(imageView, key, path, viewWidth, viewHeight, transforms) {
             @Override
             protected void onPostExecute(Bitmap bitmap) {
                 super.onPostExecute(bitmap);
                 if (bitmap != null && key != null && key.get() != null) {
+//                    Log.i(TAG, "onPostExecute: " + key.get() + " : " + bitmap.getWidth() + "-" + bitmap.getHeight());
+                    ImageCache.getInstance().put(key.get(), bitmap);
+                    ImageView imageView = this.imageView.get();
+                    if (imageView != null && key.get().equals(imageView.getTag(IMAGE_LOADER_KEY))) {
+                        imageView.setImageBitmap(bitmap);
+                        ImageCacheLocal.saveCache(context, key.get(), bitmap);
+                    }
+                }
+            }
+        };
+        imageView.setTag(IMAGE_DECODER_ORI_TASK, decoder);
+        decoder.executeOnExecutor();
+    }
+
+    /**
+     * 获取视频图片
+     *
+     * @param key        缓存
+     * @param viewWidth  view 宽
+     * @param viewHeight view 高
+     * @throws IOException
+     */
+    private void decodeVideo(String path, String key, int viewWidth, int viewHeight) {
+
+        Object tag = imageView.getTag(IMAGE_DECODER_ORI_TASK);
+        if (tag instanceof DecoderOri && !((DecoderOri) tag).isCancelled()) {
+            ((DecoderOri) tag).cancel(true);
+        }
+        DecoderOriVideo decoder = new DecoderOriVideo(imageView, key, path, viewWidth, viewHeight, transforms) {
+            @Override
+            protected void onPostExecute(Bitmap bitmap) {
+                super.onPostExecute(bitmap);
+                if (bitmap != null && key != null && key.get() != null) {
+//                    Log.i(TAG, "onPostExecute: " + key.get() + " : " + bitmap.getWidth() + "-" + bitmap.getHeight());
                     ImageCache.getInstance().put(key.get(), bitmap);
                     ImageView imageView = this.imageView.get();
                     if (imageView != null && key.get().equals(imageView.getTag(IMAGE_LOADER_KEY))) {

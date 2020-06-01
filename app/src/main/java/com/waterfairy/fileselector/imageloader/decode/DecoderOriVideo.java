@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.widget.ImageView;
 
 import com.waterfairy.fileselector.imageloader.async.BitmapDecodeOriAsyncTask;
+import com.waterfairy.fileselector.imageloader.async.VideoDecodeOriAsyncTask;
 import com.waterfairy.fileselector.imageloader.transform.Transform;
 
 import java.lang.ref.WeakReference;
@@ -15,7 +16,7 @@ import java.util.List;
  * @date 2020/5/28 19:41
  * @info:
  */
-public class DecoderOri extends BitmapDecodeOriAsyncTask {
+public class DecoderOriVideo extends VideoDecodeOriAsyncTask {
     private WeakReference<String> path;
     protected WeakReference<String> key;
     private WeakReference<Integer> viewWidth;
@@ -23,7 +24,7 @@ public class DecoderOri extends BitmapDecodeOriAsyncTask {
     protected WeakReference<ImageView> imageView;
     protected WeakReference<List<Transform>> transforms;
 
-    public DecoderOri(ImageView imageView, String key, String path, int viewWidth, int viewHeight, List<Transform> transforms) {
+    public DecoderOriVideo(ImageView imageView, String key, String path, int viewWidth, int viewHeight, List<Transform> transforms) {
         this.path = new WeakReference<>(path);
         this.viewWidth = new WeakReference<>(viewWidth);
         this.key = new WeakReference<>(key);

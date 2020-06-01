@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.waterfairy.fileselector.imageloader.ImageLoader;
+import com.waterfairy.fileselector.imageloader.transform.CenterTransform;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -149,7 +150,7 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> im
                     holder.mViewSelectState.setVisibility(View.GONE);
                     String fileType = FileUtils.getFileType(name);
 
-                    if (showThumb && (TextUtils.equals(fileType, FileUtils.FILE_TYPE_IMAGE))) {
+                    if (showThumb && (TextUtils.equals(fileType, FileUtils.FILE_TYPE_IMAGE) || TextUtils.equals(fileType, FileUtils.FILE_TYPE_VIDEO))) {
                         //图片
                         ImageLoader.with(mContext).load(file).into(holder.mIVIcon);
                     } else {
