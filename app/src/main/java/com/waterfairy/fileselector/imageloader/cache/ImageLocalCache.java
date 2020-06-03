@@ -15,7 +15,7 @@ import java.io.IOException;
  * @date 2020/5/28 19:27
  * @info:
  */
-public class ImageCacheLocal {
+public class ImageLocalCache {
     public static String cachePath = "";
     public static String cachePathName = "imageLoader";
 

@@ -16,7 +16,7 @@ import java.util.List;
  * @info:
  */
 public class DecoderOri extends BitmapDecodeOriAsyncTask {
-    private WeakReference<String> path;
+    protected WeakReference<String> path;
     protected WeakReference<String> key;
     private WeakReference<Integer> viewWidth;
     private WeakReference<Integer> viewHeight;

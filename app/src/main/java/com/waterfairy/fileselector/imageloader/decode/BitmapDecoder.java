@@ -36,7 +36,7 @@ public class BitmapDecoder {
         int srcHeight = bitmapRegionDecoder.getHeight();
 
         //等比缩放
-        float minScale = Math.min(srcWidth / (float) viewWidth, srcHeight / (float) viewWidth);
+        float minScale = Math.min(srcWidth / (float) viewWidth, srcHeight / (float) viewHeight);
 
         //裁剪区域额
         Rect rect = new Rect(0, 0, srcWidth, srcHeight);

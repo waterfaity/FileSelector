@@ -16,7 +16,7 @@ import java.util.List;
  * @info:
  */
 public class DecoderOriVideo extends VideoDecodeAsyncTask {
-    private WeakReference<String> path;
+    protected WeakReference<String> path;
     protected WeakReference<String> key;
     private WeakReference<Integer> viewWidth;
     private WeakReference<Integer> viewHeight;

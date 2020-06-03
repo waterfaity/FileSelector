@@ -7,13 +7,16 @@ import android.util.LruCache;
  * @author water_fairy
  * @email 995637517@qq.com
  * @date 2020/5/28 09:33
- * @info:
+ * @info: 图片缓存器
  */
-public class ImageCache {
+public class ImageLoaderLrcCache {
 
+    /**
+     * 最大可用内存的1/8
+     */
     private int maxSize = (int) (Runtime.getRuntime().maxMemory() / 8);
 
-    private ImageCache() {
+    private ImageLoaderLrcCache() {
         lruCache = new LruCache<String, Bitmap>(maxSize) {
             @Override
             protected int sizeOf(String key, Bitmap value) {
@@ -23,10 +26,10 @@ public class ImageCache {
     }
 
     private LruCache<String, Bitmap> lruCache;
-    private static ImageCache imageCache;
+    private static ImageLoaderLrcCache imageCache;
 
-    public static ImageCache getInstance() {
-        if (imageCache == null) imageCache = new ImageCache();
+    public static ImageLoaderLrcCache getInstance() {
+        if (imageCache == null) imageCache = new ImageLoaderLrcCache();
         return imageCache;
     }
 
