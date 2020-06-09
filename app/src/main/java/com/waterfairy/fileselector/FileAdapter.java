@@ -24,7 +24,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import static com.waterfairy.fileselector.FileSelectOptions.SORT_BY_NAME;
 
-
 /**
  * @author water_fairy
  * @email 995637517@qq.com
