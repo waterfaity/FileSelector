@@ -7,6 +7,7 @@ import android.widget.ImageView;
 
 import com.waterfairy.fileselector.imageloader.cache.ImageLoaderLrcCache;
 import com.waterfairy.fileselector.imageloader.cache.ImageLocalCache;
+import com.waterfairy.fileselector.imageloader.listener.OnErrorListener;
 import com.waterfairy.fileselector.imageloader.listener.OnLoadListener;
 import com.waterfairy.fileselector.imageloader.reference.DecoderCache;
 import com.waterfairy.fileselector.imageloader.reference.DecoderOri;
@@ -33,11 +34,13 @@ public class ImageLoader {
     private static final int IMAGE_DECODER_CACHE_TASK = 2020052814;
     private static final int IMAGE_DECODER_LISTENER = 2020052815;
 
+
     private static final String TAG = "ImageLoader";
     private Context context;
     private String path;
     private ImageView imageView;
     private WeakReference<OnLoadListener> onLoadListener;
+    private WeakReference<OnErrorListener> onErrorListener;
 
     private final List<Transform> transforms = new ArrayList<>();
 
@@ -64,6 +67,11 @@ public class ImageLoader {
         return this;
     }
 
+    /**
+     * 加载到
+     *
+     * @param imageView
+     */
     public void into(final ImageView imageView) {
         this.imageView = imageView;
         if (imageView != null) {
@@ -80,18 +88,33 @@ public class ImageLoader {
                         });
                     } else {
                         new Exception("ImageLoader:file has no write permission !").printStackTrace();
+                        if (onErrorListener != null && onErrorListener.get() != null) {
+                            onErrorListener.get().onError(-1, "ImageLoader:file has no write permission !");
+                        }
                     }
                 } else {
                     new Exception("ImageLoader:file is not exist !").printStackTrace();
+                    if (onErrorListener != null && onErrorListener.get() != null) {
+                        onErrorListener.get().onError(-1, "ImageLoader:file is not exist !");
+                    }
                 }
             } else {
                 new Exception("ImageLoader:path = null !").printStackTrace();
+                if (onErrorListener != null && onErrorListener.get() != null) {
+                    onErrorListener.get().onError(-1, "ImageLoader:path = null !");
+                }
             }
         } else {
             new Exception("ImageLoader:imageView = null !").printStackTrace();
+            if (onErrorListener != null && onErrorListener.get() != null) {
+                onErrorListener.get().onError(-1, "ImageLoader:imageView = null !");
+            }
         }
     }
 
+    /**
+     * 获取到宽高
+     */
     private void onSize() {
         String key = ImageCacheKeyTool.getImageCacheKey(path, imageView.getWidth(), imageView.getHeight(), getTransformKey());
         imageView.setTag(IMAGE_LOADER_KEY, key);
@@ -232,6 +255,11 @@ public class ImageLoader {
 
     public ImageLoader setOnLoadListener(OnLoadListener onLoadListener) {
         this.onLoadListener = new WeakReference<>(onLoadListener);
+        return this;
+    }
+
+    public ImageLoader setOnErrorListener(OnErrorListener onErrorListener) {
+        this.onErrorListener = new WeakReference<>(onErrorListener);
         return this;
     }
 }

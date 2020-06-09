@@ -11,7 +11,7 @@ public class ImageCacheKeyTool {
      * @param path         图片路径
      * @param viewWidth    view 宽
      * @param viewHeight   view 高
-     * @param transformKey transform 中的 getKey()
+     * @param transformKey transform 中的 getKey()  (多个transform 按顺序拼接)
      * @return
      */
     public static String getImageCacheKey(String path, int viewWidth, int viewHeight, String transformKey) {

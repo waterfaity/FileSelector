@@ -25,7 +25,6 @@ public class BitmapDecodeOriAsyncTask extends AsyncTask<Object, Void, Bitmap> {
             int viewWidth = (int) objects[1];
             int viewHeight = (int) objects[2];
             List<Transform> transforms = (List<Transform>) objects[3];
-//            long time = System.currentTimeMillis();
             try {
                 Bitmap decodeBitmap = new BitmapDecoder(path, viewWidth, viewHeight).decode();
                 if (transforms != null && decodeBitmap != null) {
@@ -35,7 +34,6 @@ public class BitmapDecodeOriAsyncTask extends AsyncTask<Object, Void, Bitmap> {
                         }
                     }
                 }
-//                Log.i(TAG, "doInBackground: " + (System.currentTimeMillis() - time));
                 return decodeBitmap;
             } catch (IOException e) {
                 e.printStackTrace();
