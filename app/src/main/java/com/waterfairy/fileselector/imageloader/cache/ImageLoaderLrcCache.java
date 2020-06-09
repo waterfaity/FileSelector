@@ -7,7 +7,7 @@ import android.util.LruCache;
  * @author water_fairy
  * @email 995637517@qq.com
  * @date 2020/5/28 09:33
- * @info: 图片缓存器
+ * @info: 图片缓存器(缓存到内存)
  */
 public class ImageLoaderLrcCache {
 

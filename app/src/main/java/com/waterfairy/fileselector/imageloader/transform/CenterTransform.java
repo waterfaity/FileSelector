@@ -6,9 +6,13 @@ import android.graphics.Bitmap;
  * @author water_fairy
  * @email 995637517@qq.com
  * @date 2020/6/1 17:02
- * @info:
+ * @info: 根据view的宽高 处理
  */
 public class CenterTransform extends SizeTransForm {
+
+    private CenterTransform() {
+
+    }
 
     public static Transform defaultInstance() {
         return new CenterTransform();
@@ -23,8 +27,6 @@ public class CenterTransform extends SizeTransForm {
      */
     @Override
     public Bitmap trans(String path, Bitmap compressBitmap, int viewWidth, int viewHeight) {
-        width = viewWidth;
-        height = viewHeight;
         return super.trans(path, compressBitmap, viewWidth, viewHeight);
     }
 

@@ -16,30 +16,35 @@ public class SizeTransForm implements Transform {
     protected int width;
     protected int height;
 
+    /**
+     * 默认是view的宽高
+     */
     public SizeTransForm() {
-
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
     }
 
     public SizeTransForm(int width, int height) {
         this.width = width;
         this.height = height;
     }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public SizeTransForm setWidth(int width) {
+        this.width = width;
+        return this;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public SizeTransForm setHeight(int height) {
+        this.height = height;
+        return this;
+    }
+
 
     /**
      * @param path           本地原始路径
@@ -49,6 +54,10 @@ public class SizeTransForm implements Transform {
     @Override
     public Bitmap trans(String path, Bitmap compressBitmap, int viewWidth, int viewHeight) {
 
+        if (width == 0 || height == 0) {
+            width = viewWidth;
+            height = viewHeight;
+        }
         int bitmapWidth = compressBitmap.getWidth();
         int bitmapHeight = compressBitmap.getHeight();
 
@@ -90,6 +99,6 @@ public class SizeTransForm implements Transform {
      */
     @Override
     public String getKey() {
-        return "wh=" + width + ":" + height;
+        return "SizeTransForm -> " + width + ":" + height;
     }
 }

@@ -17,7 +17,7 @@ public interface Transform {
     Bitmap trans(String path, Bitmap compressBitmap, int viewWidth, int viewHeight);
 
     /**
-     * Transform唯一表示
+     * Transform 唯一表示
      *
      * @return
      */

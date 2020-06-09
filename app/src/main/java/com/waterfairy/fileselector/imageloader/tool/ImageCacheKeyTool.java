@@ -1,7 +1,5 @@
 package com.waterfairy.fileselector.imageloader.tool;
 
-import com.waterfairy.fileselector.imageloader.MD5Utils;
-
 /**
  * @author water_fairy
  * @email 995637517@qq.com
@@ -9,6 +7,13 @@ import com.waterfairy.fileselector.imageloader.MD5Utils;
  * @info:
  */
 public class ImageCacheKeyTool {
+    /**
+     * @param path         图片路径
+     * @param viewWidth    view 宽
+     * @param viewHeight   view 高
+     * @param transformKey transform 中的 getKey()
+     * @return
+     */
     public static String getImageCacheKey(String path, int viewWidth, int viewHeight, String transformKey) {
         return MD5Utils.getMD5Code(path + ";" +
                 "wh:" + viewWidth + "-" + viewHeight + ";" +

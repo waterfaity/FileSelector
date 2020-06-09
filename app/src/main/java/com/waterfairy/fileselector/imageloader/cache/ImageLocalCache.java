@@ -13,11 +13,12 @@ import java.io.IOException;
  * @author water_fairy
  * @email 995637517@qq.com
  * @date 2020/5/28 19:27
- * @info:
+ * @info: 缓存到本地
  */
 public class ImageLocalCache {
     public static String cachePath = "";
-    public static String cachePathName = "imageLoader";
+    //默认(不设置  cachePath)  externalCacheDir + "/" + cachePathChildName
+    private static String cachePathChildName = "imageLoader";
 
     /**
      * 本地缓存是否存在
@@ -31,13 +32,20 @@ public class ImageLocalCache {
         return imageFile != null && imageFile.exists() && imageFile.canRead();
     }
 
+    /**
+     * 获取保存的文件
+     *
+     * @param context
+     * @param key
+     * @return
+     */
     public static File getSaveFilePath(Context context, String key) {
         File imageFile = null;
         if (context != null) {
             if (TextUtils.isEmpty(cachePath)) {
                 File externalCacheDir = context.getExternalCacheDir();
                 if (externalCacheDir != null) {
-                    imageFile = new File(externalCacheDir + "/" + cachePathName, key);
+                    imageFile = new File(externalCacheDir + "/" + cachePathChildName, key);
                 }
             } else {
                 imageFile = new File(cachePath, key);
@@ -46,6 +54,13 @@ public class ImageLocalCache {
         return imageFile;
     }
 
+    /**
+     * 缓存到本地
+     *
+     * @param context
+     * @param key     全路径:  cachePath / cachePathChildName / key
+     * @param bitmap
+     */
     public static void saveCache(Context context, String key, Bitmap bitmap) {
         boolean fileExist = false;
         File imageFile = getSaveFilePath(context, key);
