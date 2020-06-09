@@ -102,7 +102,6 @@ public class ImageLoader {
             boolean cacheExist = ImageLocalCache.isCacheExist(context, key);
             if (!cacheExist) {
                 //原图获取
-//                Log.i(TAG, "onSize: 加载原图");
                 if (path.endsWith(".mp4")) {
                     decodeVideo(path, key, imageView.getWidth(), imageView.getHeight());
                 } else {
@@ -110,7 +109,6 @@ public class ImageLoader {
                 }
             } else {
                 //本地缓存
-//                Log.i(TAG, "onSize: 加载缓存");
                 decodeCache(key);
             }
         } else {
@@ -118,7 +116,6 @@ public class ImageLoader {
             if (onLoadListener != null && onLoadListener.get() != null) {
                 onLoadListener.get().onLoadSuccess(path, imageView, bitmap);
             }
-//            Log.i(TAG, "onSize: 加载内存");
         }
     }
 
